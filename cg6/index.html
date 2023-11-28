@@ -18,7 +18,7 @@
     </main>
 
     <footer>
-        Etihad Aviation Training
+        Etihad Aviation Training <img src="eatlogo.png" alt="Logo" class="footer-logo">
     </footer>
 
     <script>
@@ -99,17 +99,17 @@ function parseICSData(icsData) {
 
             const minutesDiff = Math.floor(durationMS / (1000 * 60));
             const hoursDiff = Math.floor(minutesDiff / 60);
-            const diffString = "";
+            var diffString = "";
 
                 if (hoursDiff >= 1) {
-                    diffString = `${hoursDiff} ${hoursDIff === 1 ? 'hour' : 'hours'}`;
+                    diffString = `${hoursDiff} ${hoursDiff === 1 ? 'hour' : 'hours'}`;
                 } else {
                     diffString = `${minutesDiff} ${minutesDiff === 1 ? 'minute' : 'minutes'}`;
                 }
 
             return `
                 <div class="meeting-info ${isInProgress ? 'in-progress' : ''}">
-                    <h1>${formatTime(meeting.start)} to ${formatTime(meeting.end)} (${meeting.description})</h1>
+                    <h1>${formatTime(meeting.start)} to ${formatTime(meeting.end)} (${diffString})</h1>
                     <h3>Booked By: ${meeting.summary}</h3>
                 </div>
             `;
