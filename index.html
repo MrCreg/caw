@@ -98,7 +98,7 @@ function parseICSData(icsData) {
 
             return `
                 <div class="meeting-info ${isInProgress ? 'in-progress' : ''}">
-                    <h2>${formatTime(meeting.start)} to ${formatTime(meeting.end)} | Duration: ${meeting.description}</h2>
+                    <h1>${formatTime(meeting.start)} to ${formatTime(meeting.end)} (${meeting.description})</h1>
                     <h3>Booked By: ${meeting.summary}</h3>
                 </div>
             `;
