@@ -69,6 +69,8 @@ footer {
 
 
 .footer-logo {
-    max-width: 100px; /* Adjust the width as needed */
+    float:left;
+    margin-right:1rem;
+    max-width: 125px; /* Adjust the width as needed */
     height: auto; /* Maintain the aspect ratio */
 }
