@@ -94,7 +94,7 @@ function parseICSData(icsData) {
             const now = new Date();
             const startTime = new Date(meeting.start);
             const endTime = new Date(meeting.end);
-            const durationMS = end.getTime() - start.getTime();
+            const durationMS = endTime.getTime() - startTime.getTime();
             const isInProgress = startTime <= now && now <= endTime;
 
             const minutesDiff = Math.floor(durationMS / (1000 * 60));
