@@ -86,23 +86,46 @@
         }
 
         // Function to parse ICS data and extract relevant information
-        function parseICSData(icsData) {
-            // Implement your ICS parsing logic here
-            // This can be a complex task; you may need to use a library or write a parser
+function parseICSData(icsData) {
+    const meetings = [];
 
-            // For simplicity, let's assume a basic structure and extract meeting information
-            const meetings = [];
-            // Example: Extract meeting title, start time, and end time
-            const regex = /BEGIN:VEVENT[\s\S]*?SUMMARY:(.*?)\n.*?DTSTART:(.*?)\n.*?DTEND:(.*?)\n/g;
-            let match;
-            while ((match = regex.exec(icsData)) !== null) {
-                const title = match[1];
-                const startTime = match[2];
-                const endTime = match[3];
-                meetings.push({ title, startTime, endTime });
-            }
-            return meetings;
-        }
+    // Regular expression pattern to match each VEVENT block in the ICS data
+    const regexEvent = /BEGIN:VEVENT([\s\S]*?)END:VEVENT/g;
+    
+    // Regular expression patterns to extract specific fields within a VEVENT block
+    const regexUid = /UID:(.*?)\n/;
+    const regexStart = /DTSTART:(.*?)\n/;
+    const regexEnd = /DTEND:(.*?)\n/;
+    const regexSummary = /SUMMARY:(.*?)\n/;
+    const regexDescription = /DESCRIPTION:(.*?)\n/;
+    const regexLocation = /LOCATION:(.*?)\n/;
+
+    let matchEvent;
+
+    // Iterate through each VEVENT block in the ICS data
+    while ((matchEvent = regexEvent.exec(icsData)) !== null) {
+        const eventBlock = matchEvent[1];
+
+        // Extract individual fields from the VEVENT block
+        const uid = getValueFromRegex(regexUid, eventBlock);
+        const start = getValueFromRegex(regexStart, eventBlock);
+        const end = getValueFromRegex(regexEnd, eventBlock);
+        const summary = getValueFromRegex(regexSummary, eventBlock);
+        const description = getValueFromRegex(regexDescription, eventBlock);
+        const location = getValueFromRegex(regexLocation, eventBlock);
+
+        // Add the extracted meeting information to the array
+        meetings.push({ uid, start, end, summary, description, location });
+    }
+
+    return meetings;
+}
+
+// Helper function to extract values using a regular expression
+function getValueFromRegex(regex, text) {
+    const match = regex.exec(text);
+    return match ? match[1] : null;
+}
 
         // Dummy meeting data (replace this with your actual data)
         // This will be replaced when fetching data from the ICS file
