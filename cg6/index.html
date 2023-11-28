@@ -201,14 +201,14 @@ console.log("td: " + timeDifference);
         }, 60000); // Check every minute
 
         function formatTime(dateTimeString) {
-            const dateTime = new Date(dateTimeString).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false });
-            const hours = dateTime.getHours();
-            const minutes = dateTime.getMinutes();
+            const formattedDateTime = new Date(dateTimeString).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false });
+const [hours, minutes] = formattedDateTime.split(':').map(Number);
 
-            // Pad single-digit minutes with a leading zero
-            const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+// Pad single-digit minutes with a leading zero
+const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
-            return `${hours}:${formattedMinutes}`;
+return `${hours}:${formattedMinutes}`;
+
         }
     </script>
 
