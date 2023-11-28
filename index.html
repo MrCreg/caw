@@ -86,62 +86,62 @@
         }
 
         // Function to parse ICS data and extract relevant information
-function parseICSData(icsData) {
-    const meetings = [];
+        function parseICSData(icsData) {
+            const meetings = [];
 
-    // Regular expression pattern to match each VEVENT block in the ICS data
-    const regexEvent = /BEGIN:VEVENT([\s\S]*?)END:VEVENT/g;
-    
-    // Regular expression patterns to extract specific fields within a VEVENT block
-    const regexUid = /UID:(.*?)\n/;
-    const regexStart = /DTSTART:(.*?)\n/;
-    const regexEnd = /DTEND:(.*?)\n/;
-    const regexSummary = /SUMMARY:(.*?)\n/;
-    const regexDescription = /DESCRIPTION:(.*?)\n/;
-    const regexLocation = /LOCATION:(.*?)\n/;
+            // Regular expression pattern to match each VEVENT block in the ICS data
+            const regexEvent = /BEGIN:VEVENT([\s\S]*?)END:VEVENT/g;
 
-    let matchEvent;
+            // Regular expression patterns to extract specific fields within a VEVENT block
+            const regexUid = /UID:(.*?)\n/;
+            const regexStart = /DTSTART:(.*?)\n/;
+            const regexEnd = /DTEND:(.*?)\n/;
+            const regexSummary = /SUMMARY:(.*?)\n/;
+            const regexDescription = /DESCRIPTION:(.*?)\n/;
+            const regexLocation = /LOCATION:(.*?)\n/;
 
-    // Iterate through each VEVENT block in the ICS data
-    while ((matchEvent = regexEvent.exec(icsData)) !== null) {
-        const eventBlock = matchEvent[1];
+            let matchEvent;
 
-        // Extract individual fields from the VEVENT block
-        const uid = getValueFromRegex(regexUid, eventBlock);
-        const start = getValueFromRegex(regexStart, eventBlock);
-        const end = getValueFromRegex(regexEnd, eventBlock);
-        const summary = getValueFromRegex(regexSummary, eventBlock);
-        const description = getValueFromRegex(regexDescription, eventBlock);
-        const location = getValueFromRegex(regexLocation, eventBlock);
+            // Iterate through each VEVENT block in the ICS data
+            while ((matchEvent = regexEvent.exec(icsData)) !== null) {
+                const eventBlock = matchEvent[1];
 
-        // Add the extracted meeting information to the array
-        meetings.push({ uid, start, end, summary, description, location });
-    }
+                // Extract individual fields from the VEVENT block
+                const uid = getValueFromRegex(regexUid, eventBlock);
+                const start = getValueFromRegex(regexStart, eventBlock);
+                const end = getValueFromRegex(regexEnd, eventBlock);
+                const summary = getValueFromRegex(regexSummary, eventBlock);
+                const description = getValueFromRegex(regexDescription, eventBlock);
+                const location = getValueFromRegex(regexLocation, eventBlock);
 
-    return meetings;
-}
+                // Add the extracted meeting information to the array
+                meetings.push({ uid, start, end, summary, description, location });
+            }
 
-// Helper function to extract values using a regular expression
-function getValueFromRegex(regex, text) {
-    const match = regex.exec(text);
-    return match ? match[1] : null;
-}
+            return meetings;
+        }
 
-    
+        // Helper function to extract values using a regular expression
+        function getValueFromRegex(regex, text) {
+            const match = regex.exec(text);
+            return match ? match[1] : null;
+        }
 
         // Function to dynamically generate meeting information
         function generateMeetingInfo(meeting) {
             return `
                 <div class="meeting-info">
-                    <h2>${meeting.title}</h2>
-                    <p>Start Time: ${meeting.startTime}</p>
-                    <p>End Time: ${meeting.endTime}</p>
+                    <h2>${meeting.summary}</h2>
+                    <p>Start Time: ${meeting.start}</p>
+                    <p>End Time: ${meeting.end}</p>
+                    <p>Description: ${meeting.description}</p>
+                    <p>Location: ${meeting.location}</p>
                 </div>
             `;
         }
 
         // Function to populate the meeting data on the page
-        function populateMeetingData() {
+        function populateMeetingData(meetings) {
             var meetingDataElement = document.getElementById('meetingData');
             var meetingContent = '';
 
@@ -155,15 +155,14 @@ function getValueFromRegex(regex, text) {
         }
 
         // Function to check if there's a meeting in progress
-        function isMeetingInProgress() {
+        function isMeetingInProgress(meetings) {
             var now = new Date();
-            var currentHour = now.getHours();
-            var currentMinute = now.getMinutes();
+            var currentTime = now.getTime();
 
             // Loop through meetings and check if there's one in progress
             for (var i = 0; i < meetings.length; i++) {
-                var startTime = new Date(meetings[i].startTime);
-                var endTime = new Date(meetings[i].endTime);
+                var startTime = new Date(meetings[i].start);
+                var endTime = new Date(meetings[i].end);
 
                 if (startTime <= now && now <= endTime) {
                     return true;
@@ -174,10 +173,10 @@ function getValueFromRegex(regex, text) {
         }
 
         // Function to update the header based on meeting status
-        function updateHeader() {
+        function updateHeader(meetings) {
             var headerElement = document.getElementById('header');
             var meetingStatusElement = document.getElementById('meetingStatus');
-            var isInProgress = isMeetingInProgress();
+            var isInProgress = isMeetingInProgress(meetings);
 
             if (isInProgress) {
                 headerElement.classList.add('in-progress');
@@ -190,13 +189,13 @@ function getValueFromRegex(regex, text) {
                 var currentTime = now.getTime();
 
                 var nextMeeting = meetings.find(function (meeting) {
-                    var startTime = new Date(meeting.startTime);
+                    var startTime = new Date(meeting.start);
                     return startTime.getTime() > currentTime;
                 });
 
                 // Display "Room Available for X minutes/hours until the next booking"
                 if (nextMeeting) {
-                    var startTime = new Date(nextMeeting.startTime);
+                    var startTime = new Date(nextMeeting.start);
                     var timeDifference = startTime - currentTime;
 
                     var minutesDifference = Math.floor(timeDifference / (1000 * 60));
@@ -214,15 +213,19 @@ function getValueFromRegex(regex, text) {
             }
         }
 
-    
-
         // Optionally, you can set up a timer to check and update the header periodically
         setInterval(function () {
             fetchMeetingData('cg6.ics').then(function (data) {
-                meetings = data;
-                updateHeader();
+                populateMeetingData(data);
+                updateHeader(data);
             });
         }, 60000); // Check every minute
+
+        // Initial load of meeting data
+        fetchMeetingData('cg6.ics').then(function (data) {
+            populateMeetingData(data);
+            updateHeader(data);
+        });
 
     </script>
 
