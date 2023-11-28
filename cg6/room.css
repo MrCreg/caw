@@ -22,6 +22,7 @@ header {
 }
 
 .right-section {
+    border-radius: 10px;
     background-color: #008000; /* green */
     width: 70%;
 }
