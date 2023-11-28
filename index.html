@@ -1,7 +1,220 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Room Display</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .left-section {
+            width: 30%;
+        }
+
+        .right-section {
+            width: 70%;
+        }
+
+        header.in-progress {
+            background-color: #e74c3c; /* Red */
+            color: #ffffff;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .meeting-info {
+            border: 1px solid #3498db;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background-color: #f0f8ff; /* AliceBlue */
+        }
+
+        footer {
+            background-color: #3498db;
+            color: #ffffff;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+
+    <header id="header">
+        <div class="left-section">C-G-6</div>
+        <div class="right-section" id="meetingStatus">Room Available</div>
+    </header>
+
+    <main id="meetingData">
+        <!-- Dynamic meeting data will be inserted here -->
+    </main>
+
+    <footer>
+        Your Company Logo Here
+    </footer>
+
+    <script>
+        // Function to fetch meeting data from an ICS file
+        async function fetchMeetingData(icsFileURL) {
+            try {
+                const response = await fetch(icsFileURL);
+                const data = await response.text();
+                return parseICSData(data);
+            } catch (error) {
+                console.error('Error fetching meeting data:', error);
+                return [];
+            }
+        }
+
+        // Function to parse ICS data and extract relevant information
+        function parseICSData(icsData) {
+            // Implement your ICS parsing logic here
+            // This can be a complex task; you may need to use a library or write a parser
+
+            // For simplicity, let's assume a basic structure and extract meeting information
+            const meetings = [];
+            // Example: Extract meeting title, start time, and end time
+            const regex = /BEGIN:VEVENT[\s\S]*?SUMMARY:(.*?)\n.*?DTSTART:(.*?)\n.*?DTEND:(.*?)\n/g;
+            let match;
+            while ((match = regex.exec(icsData)) !== null) {
+                const title = match[1];
+                const startTime = match[2];
+                const endTime = match[3];
+                meetings.push({ title, startTime, endTime });
+            }
+            return meetings;
+        }
+
+        // Dummy meeting data (replace this with your actual data)
+        // This will be replaced when fetching data from the ICS file
+        var meetings = [
+            { title: 'Project Kickoff', startTime: '2023-11-27T10:00:00', endTime: '2023-11-27T11:30:00' },
+            { title: 'Team Collaboration', startTime: '2023-11-27T13:00:00', endTime: '2023-11-27T15:00:00' },
+            { title: 'Client Meeting', startTime: '2023-11-27T16:00:00', endTime: '2023-11-27T17:30:00' }
+            // Add more meeting entries as needed
+        ];
+
+        // Function to dynamically generate meeting information
+        function generateMeetingInfo(meeting) {
+            return `
+                <div class="meeting-info">
+                    <h2>${meeting.title}</h2>
+                    <p>Start Time: ${meeting.startTime}</p>
+                    <p>End Time: ${meeting.endTime}</p>
+                </div>
+            `;
+        }
+
+        // Function to populate the meeting data on the page
+        function populateMeetingData() {
+            var meetingDataElement = document.getElementById('meetingData');
+            var meetingContent = '';
+
+            // Loop through meetings and generate meeting info
+            meetings.forEach(function (meeting) {
+                meetingContent += generateMeetingInfo(meeting);
+            });
+
+            // Insert the meeting content into the page
+            meetingDataElement.innerHTML = meetingContent;
+        }
+
+        // Function to check if there's a meeting in progress
+        function isMeetingInProgress() {
+            var now = new Date();
+            var currentHour = now.getHours();
+            var currentMinute = now.getMinutes();
+
+            // Loop through meetings and check if there's one in progress
+            for (var i = 0; i < meetings.length; i++) {
+                var startTime = new Date(meetings[i].startTime);
+                var endTime = new Date(meetings[i].endTime);
+
+                if (startTime <= now && now <= endTime) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // Function to update the header based on meeting status
+        function updateHeader() {
+            var headerElement = document.getElementById('header');
+            var meetingStatusElement = document.getElementById('meetingStatus');
+            var isInProgress = isMeetingInProgress();
+
+            if (isInProgress) {
+                headerElement.classList.add('in-progress');
+                meetingStatusElement.textContent = 'In Progress';
+            } else {
+                headerElement.classList.remove('in-progress');
+
+                // Find the next upcoming meeting
+                var now = new Date();
+                var currentTime = now.getTime();
+
+                var nextMeeting = meetings.find(function (meeting) {
+                    var startTime = new Date(meeting.startTime);
+                    return startTime.getTime() > currentTime;
+                });
+
+                // Display "Room Available for X minutes/hours until the next booking"
+                if (nextMeeting) {
+                    var startTime = new Date(nextMeeting.startTime);
+                    var timeDifference = startTime - currentTime;
+
+                    var minutesDifference = Math.floor(timeDifference / (1000 * 60));
+                    var hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+
+                    if (minutesDifference > 0) {
+                        meetingStatusElement.textContent = `Room Available for ${minutesDifference} minutes until the next booking`;
+                    } else {
+                        meetingStatusElement.textContent = `Room Available for ${hoursDifference} hours until the next booking`;
+                    }
+                } else {
+                    // If no upcoming meetings, display "Room Available"
+                    meetingStatusElement.textContent = 'Room Available';
+                }
+            }
+        }
+
+        // Call the functions to populate meeting data and update header
+        // Replace 'your-ics-file-url.ics' with the actual URL of your ICS file
+        fetchMeetingData('your-ics-file-url.ics').then(function (data) {
+            meetings = data;
+            populateMeetingData();
+            updateHeader();
+        });
+
+        // Optionally, you can set up a timer to check and update the header periodically
+        setInterval(function () {
+            fetchMeetingData('your-ics-file-url.ics').then(function (data) {
+                meetings = data;
+                updateHeader();
+            });
+        }, 60000); // Check every minute
+
+    </script>
+
 </body>
 </html>
