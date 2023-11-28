@@ -199,22 +199,19 @@
 
         function formatTime(dateTimeString) {
     const dateTime = new Date(dateTimeString);
-    
-    const formatter = new Intl.DateTimeFormat('en-US', {
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: false,
-        timeZone: 'UTC' // Set the time zone to UTC or the time zone of your ICS file
-    });
 
-    const formattedDateTime = formatter.format(dateTime);
-    const [hours, minutes] = formattedDateTime.split(':').map(Number);
+    // Adjust the hours to GST (UTC+4)
+    dateTime.setUTCHours(dateTime.getUTCHours() + 4);
+
+    const hours = dateTime.getUTCHours();
+    const minutes = dateTime.getUTCMinutes();
 
     // Pad single-digit minutes with a leading zero
     const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
     return `${hours}:${formattedMinutes}`;
 }
+
     </script>
 
 </body>
