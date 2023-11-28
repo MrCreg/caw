@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meeting Room Display</title>
-<link rel="stylesheet" href="mystyle.css">
+<link rel="stylesheet" href="room.css">
 </head>
 <body>
 
@@ -81,8 +81,8 @@
             return `
                 <div class="meeting-info">
                     
-                    <p>Start Time: ${meeting.start} until End Time: ${meeting.end} Duration: ${meeting.description}</p>
-                    <h2>Booked By: ${meeting.summary}</h2>
+                    <h2>formatTime(${meeting.start}) to formatTime(${meeting.end}) Duration: ${meeting.description}</h2>
+                    <h3>Booked By: ${meeting.summary}</h3>
                 </div>
             `;
         }
@@ -168,11 +168,17 @@
             });
         }, 60000); // Check every minute
 
-        // Initial load of meeting data
-        fetchMeetingData('cg6.ics').then(function (data) {
-            populateMeetingData(data);
-            updateHeader(data);
-        });
+        function formatTime(dateTimeString) {
+    const dateTime = new Date(dateTimeString);
+    const hours = dateTime.getHours();
+    const minutes = dateTime.getMinutes();
+
+    // Pad single-digit minutes with a leading zero
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+    return `${hours}:${formattedMinutes}`;
+}
+
 
     </script>
 
