@@ -26,7 +26,7 @@ header {
     width: 70%;
 }
 
-header.in-progress {
+.right-section in-progress {
     background-color: #ff5a4b; /* Red */
     color: #ffffff;
 }

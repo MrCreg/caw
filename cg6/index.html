@@ -149,15 +149,15 @@ function parseICSData(icsData) {
 
         // Function to update the header based on meeting status
         function updateHeader(meetings) {
-            var headerElement = document.getElementById('header');
+            
             var meetingStatusElement = document.getElementById('meetingStatus');
             var isInProgress = isMeetingInProgress(meetings);
 
             if (isInProgress) {
-                headerElement.classList.add('in-progress');
-                meetingStatusElement.textContent = 'In Progress';
+                meetingStatusElement.classList.add('in-progress');
+                meetingStatusElement.textContent = 'Meeting In Progress';
             } else {
-                headerElement.classList.remove('in-progress');
+                meetingStatusElement.classList.remove('in-progress');
 
                 // Find the next upcoming meeting for the current day
                 var now = new Date();
