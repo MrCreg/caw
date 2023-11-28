@@ -35,53 +35,51 @@
         }
 
         // Function to parse ICS data and extract relevant information
-        // Function to parse ICS data and extract relevant information
-function parseICSData(icsData) {
-    const meetings = [];
+        function parseICSData(icsData) {
+            const meetings = [];
 
-    // Regular expression pattern to match each VEVENT block in the ICS data
-    const regexEvent = /BEGIN:VEVENT([\s\S]*?)END:VEVENT/g;
+            // Regular expression pattern to match each VEVENT block in the ICS data
+            const regexEvent = /BEGIN:VEVENT([\s\S]*?)END:VEVENT/g;
 
-    // Regular expression patterns to extract specific fields within a VEVENT block
-    const regexUid = /UID:(.*?)\n/;
-    const regexStart = /DTSTART:(.*?)\n/;
-    const regexEnd = /DTEND:(.*?)\n/;
-    const regexSummary = /SUMMARY:(.*?)\n/;
-    const regexDescription = /DESCRIPTION:(.*?)\n/;
-    const regexLocation = /LOCATION:(.*?)\n/;
+            // Regular expression patterns to extract specific fields within a VEVENT block
+            const regexUid = /UID:(.*?)\n/;
+            const regexStart = /DTSTART:(.*?)\n/;
+            const regexEnd = /DTEND:(.*?)\n/;
+            const regexSummary = /SUMMARY:(.*?)\n/;
+            const regexDescription = /DESCRIPTION:(.*?)\n/;
+            const regexLocation = /LOCATION:(.*?)\n/;
 
-    let matchEvent;
+            let matchEvent;
 
-    // Current date for dynamic filtering
-    const currentDate = new Date();
+            // Current date for dynamic filtering
+            const currentDate = new Date();
 
-    // Iterate through each VEVENT block in the ICS data
-    while ((matchEvent = regexEvent.exec(icsData)) !== null) {
-        const eventBlock = matchEvent[1];
+            // Iterate through each VEVENT block in the ICS data
+            while ((matchEvent = regexEvent.exec(icsData)) !== null) {
+                const eventBlock = matchEvent[1];
 
-        // Extract individual fields from the VEVENT block
-        const uid = getValueFromRegex(regexUid, eventBlock);
-        const start = getValueFromRegex(regexStart, eventBlock);
-        const end = getValueFromRegex(regexEnd, eventBlock);
-        const summary = getValueFromRegex(regexSummary, eventBlock);
-        const description = getValueFromRegex(regexDescription, eventBlock);
-        const location = getValueFromRegex(regexLocation, eventBlock);
+                // Extract individual fields from the VEVENT block
+                const uid = getValueFromRegex(regexUid, eventBlock);
+                const start = getValueFromRegex(regexStart, eventBlock);
+                const end = getValueFromRegex(regexEnd, eventBlock);
+                const summary = getValueFromRegex(regexSummary, eventBlock);
+                const description = getValueFromRegex(regexDescription, eventBlock);
+                const location = getValueFromRegex(regexLocation, eventBlock);
 
-        // Check if the meeting is scheduled for the current day
-        const meetingDate = new Date(start);
-        if (
-            meetingDate.getDate() === currentDate.getDate() &&
-            meetingDate.getMonth() === currentDate.getMonth() &&
-            meetingDate.getFullYear() === currentDate.getFullYear()
-        ) {
-            // Add the extracted meeting information to the array
-            meetings.push({ uid, start, end, summary, description, location });
+                // Check if the meeting is scheduled for the current day
+                const meetingDate = new Date(start);
+                if (
+                    meetingDate.getDate() === currentDate.getDate() &&
+                    meetingDate.getMonth() === currentDate.getMonth() &&
+                    meetingDate.getFullYear() === currentDate.getFullYear()
+                ) {
+                    // Add the extracted meeting information to the array
+                    meetings.push({ uid, start, end, summary, description, location });
+                }
+            }
+
+            return meetings;
         }
-    }
-
-    return meetings;
-}
-
 
         // Helper function to extract values using a regular expression
         function getValueFromRegex(regex, text) {
@@ -101,11 +99,11 @@ function parseICSData(icsData) {
             const hoursDiff = Math.floor(minutesDiff / 60);
             var diffString = "";
 
-                if (hoursDiff >= 1) {
-                    diffString = `${hoursDiff} ${hoursDiff === 1 ? 'hour' : 'hours'}`;
-                } else {
-                    diffString = `${minutesDiff} ${minutesDiff === 1 ? 'minute' : 'minutes'}`;
-                }
+            if (hoursDiff >= 1) {
+                diffString = `${hoursDiff} ${hoursDiff === 1 ? 'hour' : 'hours'}`;
+            } else {
+                diffString = `${minutesDiff} ${minutesDiff === 1 ? 'minute' : 'minutes'}`;
+            }
 
             return `
                 <div class="meeting-info ${isInProgress ? 'in-progress' : ''}">
@@ -149,7 +147,6 @@ function parseICSData(icsData) {
 
         // Function to update the header based on meeting status
         function updateHeader(meetings) {
-            
             var meetingStatusElement = document.getElementById('meetingStatus');
             var isInProgress = isMeetingInProgress(meetings);
 
@@ -165,7 +162,7 @@ function parseICSData(icsData) {
 
                 var nextMeeting = meetings.find(function (meeting) {
                     var startTime = new Date(meeting.start);
-                    
+
                     // Check if the meeting is for the current day
                     if (startTime >= today) {
                         return true;
@@ -176,7 +173,7 @@ function parseICSData(icsData) {
                 if (nextMeeting) {
                     var startTime = new Date(nextMeeting.start);
                     var timeDifference = startTime - now;
-console.log("td: " + timeDifference);
+                    console.log("td: " + timeDifference);
                     var minutesDifference = Math.floor(timeDifference / (1000 * 60));
                     var hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
                     console.log("hd: " + hoursDifference);
@@ -201,14 +198,19 @@ console.log("td: " + timeDifference);
         }, 60000); // Check every minute
 
         function formatTime(dateTimeString) {
-            const formattedDateTime = new Date(dateTimeString).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false });
-const [hours, minutes] = formattedDateTime.split(':').map(Number);
+            const dateTime = new Date(dateTimeString);
+            const utcDateTime = new Date(dateTime.getUTCFullYear(), dateTime.getUTCMonth(), dateTime.getUTCDate(),
+                dateTime.getUTCHours(), dateTime.getUTCMinutes(), dateTime.getUTCSeconds());
 
-// Pad single-digit minutes with a leading zero
-const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+            const localDateTime = new Date(utcDateTime.getTime() + (dateTime.getTimezoneOffset() * 60000));
 
-return `${hours}:${formattedMinutes}`;
+            const hours = localDateTime.getHours();
+            const minutes = localDateTime.getMinutes();
 
+            // Pad single-digit minutes with a leading zero
+            const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+            return `${hours}:${formattedMinutes}`;
         }
     </script>
 
