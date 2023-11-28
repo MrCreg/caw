@@ -208,7 +208,7 @@
 
         // Optionally, you can set up a timer to check and update the header periodically
         setInterval(function () {
-            fetchMeetingData('your-ics-file-url.ics').then(function (data) {
+            fetchMeetingData('cg6.ics').then(function (data) {
                 meetings = data;
                 updateHeader();
             });
