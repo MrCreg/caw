@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meeting Room Display</title>
-<link rel="stylesheet" href="room.css">
+    <link rel="stylesheet" href="room.css">
 </head>
 <body>
 
@@ -78,9 +78,14 @@
 
         // Function to dynamically generate meeting information
         function generateMeetingInfo(meeting) {
+            const now = new Date();
+            const startTime = new Date(meeting.start);
+            const endTime = new Date(meeting.end);
+            const isInProgress = startTime <= now && now <= endTime;
+
             return `
-                <div class="meeting-info">
-                    <h2>Start Time: ${formatTime(meeting.start)} | End Time: ${formatTime(meeting.end)} | Duration: ${meeting.description}</h2>
+                <div class="meeting-info ${isInProgress ? 'in-progress' : ''}">
+                    <h2>${formatTime(meeting.start)} to ${formatTime(meeting.end)} | Duration: ${meeting.description}</h2>
                     <h3>Booked By: ${meeting.summary}</h3>
                 </div>
             `;
@@ -119,50 +124,49 @@
         }
 
         // Function to update the header based on meeting status
-function updateHeader(meetings) {
-    var headerElement = document.getElementById('header');
-    var meetingStatusElement = document.getElementById('meetingStatus');
-    var isInProgress = isMeetingInProgress(meetings);
+        function updateHeader(meetings) {
+            var headerElement = document.getElementById('header');
+            var meetingStatusElement = document.getElementById('meetingStatus');
+            var isInProgress = isMeetingInProgress(meetings);
 
-    if (isInProgress) {
-        headerElement.classList.add('in-progress');
-        meetingStatusElement.textContent = 'In Progress';
-    } else {
-        headerElement.classList.remove('in-progress');
+            if (isInProgress) {
+                headerElement.classList.add('in-progress');
+                meetingStatusElement.textContent = 'In Progress';
+            } else {
+                headerElement.classList.remove('in-progress');
 
-        // Find the next upcoming meeting for the current day
-        var now = new Date();
-        var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                // Find the next upcoming meeting for the current day
+                var now = new Date();
+                var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-        var nextMeeting = meetings.find(function (meeting) {
-            var startTime = new Date(meeting.start);
-            
-            // Check if the meeting is for the current day
-            if (startTime >= today) {
-                return true;
+                var nextMeeting = meetings.find(function (meeting) {
+                    var startTime = new Date(meeting.start);
+                    
+                    // Check if the meeting is for the current day
+                    if (startTime >= today) {
+                        return true;
+                    }
+                });
+
+                // Display "Room Available for X minutes/hours until the next booking"
+                if (nextMeeting) {
+                    var startTime = new Date(nextMeeting.start);
+                    var timeDifference = startTime - now;
+
+                    var minutesDifference = Math.floor(timeDifference / (1000 * 60));
+                    var hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+
+                    if (minutesDifference > 0 && hoursDifference < 1) {
+                        meetingStatusElement.textContent = `Room Available for next ${minutesDifference} minutes`;
+                    } else if (hoursDifference >= 1) {
+                        meetingStatusElement.textContent = `Room Available for next ${hoursDifference} hours`;
+                    }
+                } else {
+                    // If no upcoming meetings for the current day, display "Room Available"
+                    meetingStatusElement.textContent = 'Room Available';
+                }
             }
-        });
-
-        // Display "Room Available for X minutes/hours until the next booking"
-        if (nextMeeting) {
-            var startTime = new Date(nextMeeting.start);
-            var timeDifference = startTime - now;
-
-            var minutesDifference = Math.floor(timeDifference / (1000 * 60));
-            var hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
-console.log("hours diff:" + hoursDifference)
-            if (minutesDifference > 0 && hoursDifference < 1) {
-                meetingStatusElement.textContent = `Room Available for next ${minutesDifference} minutes`;
-            } else if (hoursDifference >= 1) {
-                meetingStatusElement.textContent = `Room Available for next ${hoursDifference} hours`;
-            }
-        } else {
-            // If no upcoming meetings for the current day, display "Room Available"
-            meetingStatusElement.textContent = 'Room Available';
         }
-    }
-}
-
 
         // Optionally, you can set up a timer to check and update the header periodically
         setInterval(function () {
@@ -173,17 +177,15 @@ console.log("hours diff:" + hoursDifference)
         }, 60000); // Check every minute
 
         function formatTime(dateTimeString) {
-    const dateTime = new Date(dateTimeString);
-    const hours = dateTime.getHours();
-    const minutes = dateTime.getMinutes();
+            const dateTime = new Date(dateTimeString);
+            const hours = dateTime.getHours();
+            const minutes = dateTime.getMinutes();
 
-    // Pad single-digit minutes with a leading zero
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+            // Pad single-digit minutes with a leading zero
+            const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
-    return `${hours}:${formattedMinutes}`;
-}
-
-
+            return `${hours}:${formattedMinutes}`;
+        }
     </script>
 
 </body>
