@@ -152,10 +152,10 @@
                 if (nextMeeting) {
                     var startTime = new Date(nextMeeting.start);
                     var timeDifference = startTime - now;
-
+console.log("td: " + timeDifference);
                     var minutesDifference = Math.floor(timeDifference / (1000 * 60));
                     var hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
-
+                    console.log("hd: " + hoursDifference);
                     if (minutesDifference > 0 && hoursDifference < 1) {
                         meetingStatusElement.textContent = `Room Available for next ${minutesDifference} minutes`;
                     } else if (hoursDifference >= 1) {
