@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meeting Room Display</title>
-    <link rel="stylesheet" href="room.css">
+<link rel="stylesheet" href="mystyle.css">
 </head>
 <body>
 
@@ -80,11 +80,9 @@
         function generateMeetingInfo(meeting) {
             return `
                 <div class="meeting-info">
-                    <h2>${meeting.summary}</h2>
-                    <p>Start Time: ${meeting.start}</p>
-                    <p>End Time: ${meeting.end}</p>
-                    <p>Description: ${meeting.description}</p>
-                    <p>Location: ${meeting.location}</p>
+                    
+                    <p>Start Time: ${meeting.start} until End Time: ${meeting.end} Duration: ${meeting.description}</p>
+                    <h2>Booked By: ${meeting.summary}</h2>
                 </div>
             `;
         }
