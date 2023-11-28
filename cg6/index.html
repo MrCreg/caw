@@ -198,20 +198,23 @@
         }, 60000); // Check every minute
 
         function formatTime(dateTimeString) {
-            const dateTime = new Date(dateTimeString);
-            const utcDateTime = new Date(dateTime.getUTCFullYear(), dateTime.getUTCMonth(), dateTime.getUTCDate(),
-                dateTime.getUTCHours(), dateTime.getUTCMinutes(), dateTime.getUTCSeconds());
+    const dateTime = new Date(dateTimeString);
+    
+    const formatter = new Intl.DateTimeFormat('en-US', {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: false,
+        timeZone: 'UTC' // Set the time zone to UTC or the time zone of your ICS file
+    });
 
-            const localDateTime = new Date(utcDateTime.getTime() + (dateTime.getTimezoneOffset() * 60000));
+    const formattedDateTime = formatter.format(dateTime);
+    const [hours, minutes] = formattedDateTime.split(':').map(Number);
 
-            const hours = localDateTime.getHours();
-            const minutes = localDateTime.getMinutes();
+    // Pad single-digit minutes with a leading zero
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
-            // Pad single-digit minutes with a leading zero
-            const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-
-            return `${hours}:${formattedMinutes}`;
-        }
+    return `${hours}:${formattedMinutes}`;
+}
     </script>
 
 </body>
