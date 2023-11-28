@@ -201,7 +201,7 @@ console.log("td: " + timeDifference);
         }, 60000); // Check every minute
 
         function formatTime(dateTimeString) {
-            const dateTime = new Date(dateTimeString);
+            const dateTime = new Date(dateTimeString).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false });
             const hours = dateTime.getHours();
             const minutes = dateTime.getMinutes();
 
