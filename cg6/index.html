@@ -217,20 +217,20 @@ while (meetingStatusElement.firstChild) {
                 // Display "Room Available for X minutes/hours until the next booking"
                 if (nextMeeting) {
                     var startTime = new Date(nextMeeting.start);
-                    var timeDifference = startTime - now;
+                    var timeDifference = startTime - currentDate;
                     console.log("td: " + timeDifference);
                     var minutesDifference = Math.floor(timeDifference / (1000 * 60));
                     var hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
                     console.log("hd: " + hoursDifference);
 
                     if (minutesDifference > 0 && hoursDifference < 1) {
-                        meetingStatusElement.textContent = `Room Available for next ${minutesDifference} minutes`;
+                        meetingStatusElement.textContent = `Available for next ${minutesDifference} minutes`;
                     } else if (hoursDifference >= 1) {
-                        meetingStatusElement.textContent = `Room Available for next ${hoursDifference} hours`;
+                        meetingStatusElement.textContent = `Available for next ${hoursDifference} hours`;
                     }
                 } else {
                     // If no upcoming meetings for the current day, display "Room Available"
-                    meetingStatusElement.textContent = 'Room Available';
+                    meetingStatusElement.textContent = 'Available';
                 }
             }
         }
