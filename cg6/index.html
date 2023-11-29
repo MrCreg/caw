@@ -77,6 +77,10 @@ console.log("matched");
 
                 // Check if the meeting is scheduled for the current day
                 const meetingDate = new Date(start);
+                console.log("meet" + meetingDate + "current:" + currentDate);
+                console.log("TEST1: meet" + meetingDate.getDate() + "current:" + currentDate.getDate());
+                console.log("TEST2: meet" + meetingDate.getMonth() + "current:" + currentDate.getMonth());
+                console.log("TEST3: meet" + meetingDate.getFullYear() + "current:" + currentDate.getFullYear());
                 if (
                     meetingDate.getDate() === currentDate.getDate() &&
                     meetingDate.getMonth() === currentDate.getMonth() &&
