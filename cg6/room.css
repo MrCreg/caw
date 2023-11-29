@@ -28,9 +28,12 @@ header {
 }
 
 .right-section.in-progress {
-    animation: blink 2s infinite;
     background-color: #ff5a4b; /* Red */
     color: #ffffff;
+}
+
+.blink {
+    animation: blink 3s infinite;
 }
 
 @keyframes blink {

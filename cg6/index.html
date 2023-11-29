@@ -93,7 +93,7 @@
             const startTimeB = new Date(b.start);
             return startTimeA - startTimeB;
         });
-        
+
             console.log("Meeting Array Follows:");
 console.log(meetings);
             return meetings;
@@ -169,10 +169,21 @@ console.log(meetings);
             var isInProgress = isMeetingInProgress(meetings);
 
             if (isInProgress) {
-                meetingStatusElement.classList.add('in-progress');
-                meetingStatusElement.textContent = 'Meeting In Progress';
+                // Create a new span element
+    const blinkSpan = document.createElement('span');
+    blinkSpan.classList.add('blink'); // Add the "blink" class to the span
+
+    // Set the text content inside the span
+    blinkSpan.textContent = 'Meeting In Progress';
+
+    // Clear the existing content and append the span
+    meetingStatusElement.innerHTML = '';
+    meetingStatusElement.appendChild(blinkSpan);
             } else {
                 meetingStatusElement.classList.remove('in-progress');
+                // Remove the child elements inside meetingStatusElement
+while (meetingStatusElement.firstChild) {
+    meetingStatusElement.removeChild(meetingStatusElement.firstChild);
 
                 // Find the next upcoming meeting for the current day
           
@@ -207,6 +218,7 @@ console.log(meetings);
                 }
             }
         }
+    }
 
         // Function to format time based on GMT+4 (GST)
         function formatTime(dateTimeString) {
