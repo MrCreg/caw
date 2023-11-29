@@ -28,7 +28,7 @@
         // Global variable to store the current date
         var currentDate;
         currentDate = new Date();
-        
+
         // Function to fetch meeting data from an ICS file
         async function fetchMeetingData(icsFileURL) {
             try {
@@ -72,6 +72,9 @@
                 const description = getValueFromRegex(regexDescription, eventBlock);
                 const location = getValueFromRegex(regexLocation, eventBlock);
 
+                console.log("meeting start:" + start);
+                console.log("meeting end:" + end);
+
                 // Check if the meeting is scheduled for the current day
                 const meetingDate = new Date(start);
                 if (
@@ -95,11 +98,10 @@
 
         // Function to generate meeting information
         function generateMeetingInfo(meeting) {
-            const now = new Date();
             const startTime = new Date(meeting.start);
             const endTime = new Date(meeting.end);
             const durationMS = endTime.getTime() - startTime.getTime();
-            const isInProgress = startTime <= now && now <= endTime;
+            const isInProgress = startTime <= currentDate && currentDate <= endTime;
 
             const minutesDiff = Math.floor(durationMS / (1000 * 60));
             const hoursDiff = Math.floor(minutesDiff / 60);
@@ -136,8 +138,8 @@
 
         // Function to check if there's a meeting in progress
         function isMeetingInProgress(meetings) {
-            var now = new Date();
-            var currentTime = now.getTime();
+        
+            var currentTime = currentDate.getTime();
 
             // Loop through meetings and check if there's one in progress
             for (var i = 0; i < meetings.length; i++) {
@@ -164,7 +166,7 @@
                 meetingStatusElement.classList.remove('in-progress');
 
                 // Find the next upcoming meeting for the current day
-                var now = new Date();
+          
                 var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
                 var nextMeeting = meetings.find(function (meeting) {
@@ -200,6 +202,8 @@
         // Function to format time based on GMT+4 (GST)
         function formatTime(dateTimeString) {
             const dateTime = new Date(dateTimeString);
+            console.log("format:" + dateTimeString);
+
             dateTime.setUTCHours(dateTime.getUTCHours() + 4);
 
             const hours = dateTime.getUTCHours();
