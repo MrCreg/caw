@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Script</title>
+</head>
+<body>
+
+    <div id="output"></div>
+
+    <script>
+        var currentDate = new Date();
+
+        const md = new Date("2023-11-29T09:00:00").getTimezoneOffset();
+        const meetingDate = new Date("2023-11-29T09:00:00");
+
+        var currentTime = currentDate.getTime();
+
+        // Function to display output on the HTML page
+        function displayOutput(output) {
+            var outputElement = document.getElementById('output');
+            outputElement.innerHTML += '<p>' + output + '</p>';
+        }
+
+        displayOutput("Current: " + currentDate + " Time: " + currentTime);
+        displayOutput("Meeting: " + meetingDate + " Meet Time: " + md);
+        displayOutput("Meeting: " + meetingDate.getMonth());
+        displayOutput("Current: " + currentDate.getMonth());
+        displayOutput("Meeting: " + meetingDate.getDate());
+        displayOutput("Current: " + currentDate.getDate());
+        displayOutput("Meeting: " + meetingDate.getFullYear());
+        displayOutput("Current: " + currentDate.getFullYear());
+    </script>
+
+</body>
+</html>
