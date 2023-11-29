@@ -28,8 +28,15 @@ header {
 }
 
 .right-section.in-progress {
+    animation: blink 2s infinite;
     background-color: #ff5a4b; /* Red */
     color: #ffffff;
+}
+
+@keyframes blink {
+    0% {opacity: 1;}
+    50% {opacity: 0;}
+    100% {opacity:1;}
 }
 
 main {
