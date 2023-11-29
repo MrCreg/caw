@@ -17,6 +17,11 @@
 
         var currentTime = currentDate.getTime();
 
+if (md != 0) {
+    //there is a timezone ofset inroduced, so fixit
+    fixedMeetingDate = meetingDate.getUTCDate();
+}
+
         // Function to display output on the HTML page
         function displayOutput(output) {
             var outputElement = document.getElementById('output');
@@ -25,6 +30,7 @@
 
         displayOutput("Current: " + currentDate + " Time: " + currentTime);
         displayOutput("Meeting: " + meetingDate + " Meet Time: " + md);
+        displayOutput("Fixed Meeting: " + fixedMeetingDate + " Meet Time: " + md);
         displayOutput("Meeting: " + meetingDate.getMonth());
         displayOutput("Current: " + currentDate.getMonth());
         displayOutput("Meeting: " + meetingDate.getDate());
