@@ -216,6 +216,8 @@ while (meetingStatusElement.firstChild) {
 
         // Function to format time
         function formatTime(dateTimeString) {
+
+            var timeString = dateTimeString;
             // Extract hours and minutes using string manipulation
             const hours = timeString.substr(11, 2);
             const minutes = timeString.substr(14, 2);
