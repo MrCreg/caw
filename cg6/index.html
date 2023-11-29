@@ -184,16 +184,16 @@ console.log(meetings);
                 // Remove the child elements inside meetingStatusElement
 while (meetingStatusElement.firstChild) {
     meetingStatusElement.removeChild(meetingStatusElement.firstChild);
-
+}
                 // Find the next upcoming meeting for the current day
           
-                var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                
 
                 var nextMeeting = meetings.find(function (meeting) {
                     var startTime = new Date(meeting.start);
 
                     // Check if the meeting is for the current day
-                    if (startTime >= today) {
+                    if (startTime >= currentDate) {
                         return true;
                     }
                 });
@@ -218,7 +218,7 @@ while (meetingStatusElement.firstChild) {
                 }
             }
         }
-    }
+    
 
         // Function to format time based on GMT+4 (GST)
         function formatTime(dateTimeString) {
