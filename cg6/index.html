@@ -86,6 +86,14 @@
                     meetings.push({ uid, start, end, summary, description, location });
                 }
             }
+
+            // Sort meetings by the "start" field
+        meetings.sort(function(a, b) {
+            const startTimeA = new Date(a.start);
+            const startTimeB = new Date(b.start);
+            return startTimeA - startTimeB;
+        });
+        
             console.log("Meeting Array Follows:");
 console.log(meetings);
             return meetings;
