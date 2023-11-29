@@ -21,7 +21,7 @@
 
     <!-- Footer Section -->
     <footer>
-        <div class="footer left-section" id="currentTime"></div>
+        <div class="left-section timeDisplay" id="currentTime"></div>
         <img src="../images/eatlogo.png" alt="Logo" class="footer-logo">
     </footer>
 
@@ -38,7 +38,7 @@
                 const meetings = parseICSData(data);
 
                 currentDate = new Date();
-                
+
                 populateMeetingData(meetings);
                 updateHeader(meetings);
                 updateFooter();
