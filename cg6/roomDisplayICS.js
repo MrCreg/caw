@@ -41,7 +41,7 @@
             // Iterate through each VEVENT block in the ICS data
             while ((matchEvent = regexEvent.exec(icsData)) !== null) {
                 const eventBlock = matchEvent[1];
-console.log("matched");
+
                 // Extract individual fields from the VEVENT block
                 const uid = getValueFromRegex(regexUid, eventBlock);
                 const start = getValueFromRegex(regexStart, eventBlock);
@@ -50,15 +50,10 @@ console.log("matched");
                 const description = getValueFromRegex(regexDescription, eventBlock);
                 const location = getValueFromRegex(regexLocation, eventBlock);
 
-                console.log("meeting start:" + start);
-                console.log("meeting end:" + end);
 
                 // Check if the meeting is scheduled for the current day
                 const meetingDate = new Date(start);
-                console.log("meet" + meetingDate + "current:" + currentDate);
-                console.log("TEST1: meet" + meetingDate.getDate() + "current:" + currentDate.getDate());
-                console.log("TEST2: meet" + meetingDate.getMonth() + "current:" + currentDate.getMonth());
-                console.log("TEST3: meet" + meetingDate.getFullYear() + "current:" + currentDate.getFullYear());
+           
                 if (
                     meetingDate.getDate() === currentDate.getDate() &&
                     meetingDate.getMonth() === currentDate.getMonth() &&
@@ -76,7 +71,7 @@ console.log("matched");
             return startTimeA - startTimeB;
         });
 
-            console.log("Meeting Array Follows:");
+            
 console.log(meetings);
             return meetings;
         }
@@ -194,10 +189,10 @@ while (meetingStatusElement.firstChild) {
                 if (nextMeeting) {
                     var startTime = new Date(nextMeeting.start);
                     var timeDifference = startTime - currentDate;
-                    console.log("td: " + timeDifference);
+                    
                     var minutesDifference = Math.floor(timeDifference / (1000 * 60));
                     var hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
-                    console.log("hd: " + hoursDifference);
+                    
 
                     if (minutesDifference > 0 && hoursDifference < 1) {
                         meetingStatusElement.textContent = `Available for next ${minutesDifference} minutes`;
@@ -221,14 +216,11 @@ while (meetingStatusElement.firstChild) {
 
         // Function to format time
         function formatTime(dateTimeString) {
-            const dateTime = new Date(dateTimeString);
+            // Extract hours and minutes using string manipulation
+            const hours = timeString.substr(11, 2);
+            const minutes = timeString.substr(14, 2);
 
-            const hours = dateTime.getHours();
-            const minutes = dateTime.getMinutes();
-            const formattedHours = hours < 10 ? `0${hours}` : hours;
-            const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-
-            return `${formattedHours}:${formattedMinutes}`;
+            return `${hours}:${minutes}`;
         }
 
         
