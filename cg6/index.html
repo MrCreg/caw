@@ -5,13 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meeting Room Display</title>
     <link rel="stylesheet" href="room.css">
-    <style>
-        /* Added style for the current meeting */
-        .meeting-info.in-progress {
-            background-color: #ffcccb; /* Light red background for in-progress meeting */
-            border: 1px solid #ff4136; /* Red border for in-progress meeting */
-        }
-    </style>
 </head>
 <body>
 
@@ -32,6 +25,10 @@
     </footer>
 
     <script>
+        // Global variable to store the current date
+        var currentDate;
+        currentDate = new Date();
+        
         // Function to fetch meeting data from an ICS file
         async function fetchMeetingData(icsFileURL) {
             try {
@@ -62,9 +59,6 @@
             const regexLocation = /LOCATION:(.*?)\n/;
 
             let matchEvent;
-
-            // Current date for dynamic filtering
-            const currentDate = new Date();
 
             // Iterate through each VEVENT block in the ICS data
             while ((matchEvent = regexEvent.exec(icsData)) !== null) {
@@ -190,6 +184,7 @@
                     var minutesDifference = Math.floor(timeDifference / (1000 * 60));
                     var hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
                     console.log("hd: " + hoursDifference);
+
                     if (minutesDifference > 0 && hoursDifference < 1) {
                         meetingStatusElement.textContent = `Room Available for next ${minutesDifference} minutes`;
                     } else if (hoursDifference >= 1) {
@@ -202,30 +197,21 @@
             }
         }
 
-        // Optionally, you can set up a timer to check and update the header periodically
-        setInterval(function () {
-            fetchMeetingData('cg6.ics');
-        }, 60000); // Check every minute
-
+        // Function to format time based on GMT+4 (GST)
         function formatTime(dateTimeString) {
             const dateTime = new Date(dateTimeString);
-
-            // Adjust the hours to GST (UTC+4)
             dateTime.setUTCHours(dateTime.getUTCHours() + 4);
 
             const hours = dateTime.getUTCHours();
             const minutes = dateTime.getUTCMinutes();
-
-            // Pad single-digit minutes with a leading zero
             const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
             return `${hours}:${formattedMinutes}`;
         }
 
-//Get the date on load
+        // Get the date on page load
+        
         fetchMeetingData('cg6.ics');
-
-
     </script>
 
 </body>
