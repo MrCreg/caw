@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meeting Room Display</title>
     <link rel="stylesheet" href="room.css">
+    <style>
+        /* Added style for the current meeting */
+        .meeting-info.in-progress {
+            background-color: #ffcccb; /* Light red background for in-progress meeting */
+            border: 1px solid #ff4136; /* Red border for in-progress meeting */
+        }
+    </style>
 </head>
 <body>
 
@@ -30,11 +37,12 @@
             try {
                 const response = await fetch(icsFileURL);
                 const data = await response.text();
-                return parseICSData(data);
+                const meetings = parseICSData(data);
+                populateMeetingData(meetings);
+                updateHeader(meetings);
             } catch (error) {
                 // Log an error message and return an empty array in case of an error
                 console.error('Error fetching meeting data:', error);
-                return [];
             }
         }
 
@@ -45,7 +53,13 @@
             // Regular expression pattern to match each VEVENT block in the ICS data
             const regexEvent = /BEGIN:VEVENT([\s\S]*?)END:VEVENT/g;
 
-            // ... (Other regular expressions for extracting specific fields within a VEVENT block)
+            // Regular expression patterns to extract specific fields within a VEVENT block
+            const regexUid = /UID:(.*?)\n/;
+            const regexStart = /DTSTART:(.*?)\n/;
+            const regexEnd = /DTEND:(.*?)\n/;
+            const regexSummary = /SUMMARY:(.*?)\n/;
+            const regexDescription = /DESCRIPTION:(.*?)\n/;
+            const regexLocation = /LOCATION:(.*?)\n/;
 
             let matchEvent;
 
@@ -56,7 +70,13 @@
             while ((matchEvent = regexEvent.exec(icsData)) !== null) {
                 const eventBlock = matchEvent[1];
 
-                // ... (Extract individual fields from the VEVENT block)
+                // Extract individual fields from the VEVENT block
+                const uid = getValueFromRegex(regexUid, eventBlock);
+                const start = getValueFromRegex(regexStart, eventBlock);
+                const end = getValueFromRegex(regexEnd, eventBlock);
+                const summary = getValueFromRegex(regexSummary, eventBlock);
+                const description = getValueFromRegex(regexDescription, eventBlock);
+                const location = getValueFromRegex(regexLocation, eventBlock);
 
                 // Check if the meeting is scheduled for the current day
                 const meetingDate = new Date(start);
@@ -71,6 +91,12 @@
             }
 
             return meetings;
+        }
+
+        // Helper function to extract values using a regular expression
+        function getValueFromRegex(regex, text) {
+            const match = regex.exec(text);
+            return match ? match[1] : null;
         }
 
         // Function to generate meeting information
@@ -100,28 +126,87 @@
             `;
         }
 
-        // ... (Other functions)
+        // Function to populate the meeting data on the page
+        function populateMeetingData(meetings) {
+            var meetingDataElement = document.getElementById('meetingData');
+            var meetingContent = '';
+
+            // Loop through meetings and generate meeting info
+            meetings.forEach(function (meeting) {
+                meetingContent += generateMeetingInfo(meeting);
+            });
+
+            // Insert the meeting content into the page
+            meetingDataElement.innerHTML = meetingContent;
+        }
+
+        // Function to check if there's a meeting in progress
+        function isMeetingInProgress(meetings) {
+            var now = new Date();
+            var currentTime = now.getTime();
+
+            // Loop through meetings and check if there's one in progress
+            for (var i = 0; i < meetings.length; i++) {
+                var startTime = new Date(meetings[i].start);
+                var endTime = new Date(meetings[i].end);
+
+                if (startTime <= now && now <= endTime) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // Function to update the header based on meeting status
+        function updateHeader(meetings) {
+            var meetingStatusElement = document.getElementById('meetingStatus');
+            var isInProgress = isMeetingInProgress(meetings);
+
+            if (isInProgress) {
+                meetingStatusElement.classList.add('in-progress');
+                meetingStatusElement.textContent = 'Meeting In Progress';
+            } else {
+                meetingStatusElement.classList.remove('in-progress');
+
+                // Find the next upcoming meeting for the current day
+                var now = new Date();
+                var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+                var nextMeeting = meetings.find(function (meeting) {
+                    var startTime = new Date(meeting.start);
+
+                    // Check if the meeting is for the current day
+                    if (startTime >= today) {
+                        return true;
+                    }
+                });
+
+                // Display "Room Available for X minutes/hours until the next booking"
+                if (nextMeeting) {
+                    var startTime = new Date(nextMeeting.start);
+                    var timeDifference = startTime - now;
+                    console.log("td: " + timeDifference);
+                    var minutesDifference = Math.floor(timeDifference / (1000 * 60));
+                    var hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+                    console.log("hd: " + hoursDifference);
+                    if (minutesDifference > 0 && hoursDifference < 1) {
+                        meetingStatusElement.textContent = `Room Available for next ${minutesDifference} minutes`;
+                    } else if (hoursDifference >= 1) {
+                        meetingStatusElement.textContent = `Room Available for next ${hoursDifference} hours`;
+                    }
+                } else {
+                    // If no upcoming meetings for the current day, display "Room Available"
+                    meetingStatusElement.textContent = 'Room Available';
+                }
+            }
+        }
 
         // Optionally, you can set up a timer to check and update the header periodically
         setInterval(function () {
-            // Fetch meeting data, populate the meeting data, and update the header
-            fetchMeetingData('cg6.ics').then(function (data) {
-                populateMeetingData(data);
-                updateHeader(data);
-            });
+            fetchMeetingData('cg6.ics');
         }, 60000); // Check every minute
 
-        // ... (Other functions)
-
-        // Helper function to extract values using a regular expression
-        function getValueFromRegex(regex, text) {
-            const match = regex.exec(text);
-            return match ? match[1] : null;
-        }
-
-        // ... (Other functions)
-
-        // Function to format time and adjust to GST (UTC+4)
         function formatTime(dateTimeString) {
             const dateTime = new Date(dateTimeString);
 
@@ -136,10 +221,6 @@
 
             return `${hours}:${formattedMinutes}`;
         }
-
-        // Fetch meeting data and display on page when script runs
-        fetchMeetingData('cg6.ics');
-
     </script>
 
 </body>
