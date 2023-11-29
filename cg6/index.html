@@ -147,7 +147,7 @@ console.log(meetings);
                 var startTime = new Date(meetings[i].start);
                 var endTime = new Date(meetings[i].end);
 
-                if (startTime <= now && now <= endTime) {
+                if (startTime <= currentTime && currentTime <= endTime) {
                     return true;
                 }
             }
