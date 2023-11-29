@@ -116,6 +116,12 @@ console.log(meetings);
             const durationMS = endTime.getTime() - startTime.getTime();
             const isInProgress = startTime <= currentDate && currentDate <= endTime;
 
+
+
+            // Check if the meeting has ended
+            const hasEnded = currentDate > endTime;
+
+
             const minutesDiff = Math.floor(durationMS / (1000 * 60));
             const hoursDiff = Math.floor(minutesDiff / 60);
             var diffString = "";
@@ -127,8 +133,11 @@ console.log(meetings);
             }
 
             // Add the "current-meeting" class for the in-progress meeting
+
+            const meetingClasses = `meeting-info ${isInProgress ? 'in-progress' : ''} ${hasEnded ? 'past-meeting' : ''}`;
+
             return `
-                <div class="meeting-info ${isInProgress ? 'in-progress' : ''}">
+            <div class="${meetingClasses}">
                     <h1>${formatTime(meeting.start)} to ${formatTime(meeting.end)} (${diffString})</h1>
                     <h3>Booked By: ${meeting.summary}</h3>
                 </div>
