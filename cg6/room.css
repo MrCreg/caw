@@ -57,6 +57,12 @@ header {
     color: #ffffff;
 }
 
+/*For the Footer*/
+.right-section.timeDisplay {
+    font-weight: bold;
+    color: #333; /* Adjust the color as needed */
+}
+
 .blink {
     animation: blink 3s infinite;
 }
@@ -110,6 +116,7 @@ footer {
     justify-content: space-between;
     align-items: center; 
 }
+
 
 
 .footer-logo {

@@ -21,7 +21,7 @@
 
     <!-- Footer Section -->
     <footer>
-        <div class="left-section" id="currentTime"></div>
+        <div class="footer left-section" id="currentTime"></div>
         <img src="../images/eatlogo.png" alt="Logo" class="footer-logo">
     </footer>
 
@@ -36,6 +36,9 @@
                 const response = await fetch(icsFileURL);
                 const data = await response.text();
                 const meetings = parseICSData(data);
+
+                currentDate = new Date();
+                
                 populateMeetingData(meetings);
                 updateHeader(meetings);
                 updateFooter();
