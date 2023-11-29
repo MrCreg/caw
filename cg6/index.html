@@ -63,7 +63,7 @@
             // Iterate through each VEVENT block in the ICS data
             while ((matchEvent = regexEvent.exec(icsData)) !== null) {
                 const eventBlock = matchEvent[1];
-
+console.log("matched");
                 // Extract individual fields from the VEVENT block
                 const uid = getValueFromRegex(regexUid, eventBlock);
                 const start = getValueFromRegex(regexStart, eventBlock);
