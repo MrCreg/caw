@@ -1,5 +1,31 @@
+
+/* Room Ipad */
+@font-face {
+    font-family: 'EA';
+    src: url('../fonts/ea-boldv3.woff') format('woff');
+    /* Add additional font formats if needed */
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'EA';
+    src: url('../fonts/ea-bookv3.woff') format('woff');
+    /* Add additional font formats if needed */
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'EA';
+    src: url('../fonts/ea-mediumv3.woff') format('woff');
+    /* Add additional font formats if needed */
+    font-weight: medium;
+    font-style: normal;
+}
+
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'EA', sans-serif;
     background-color: #ffffff;
     color: #000000;
     margin: 0;
