@@ -60,7 +60,10 @@ header {
 /*For the Footer*/
 .left-section.timeDisplay {
     font-weight: bold;
-    color: #333; /* Adjust the color as needed */
+    color: #ffffff; /* Adjust the color as needed */
+    font-size:2rem;
+    text-align:left;
+    margin-left:1rem;
 }
 
 .blink {
@@ -90,7 +93,11 @@ main {
 }
 
 .meeting-info.past-meeting {
-    background-color: #d3d3d3; /* Grey background for past meeting */
+    background-color: #c2c2c2; /* Grey background for past meeting */
+    opacity: 0.6;
+    color: #808080;
+    font-style: italic;
+
 }
 
 .meeting-info h1 {

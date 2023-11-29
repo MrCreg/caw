@@ -246,18 +246,16 @@ while (meetingStatusElement.firstChild) {
             currentTimeElement.textContent = `${formattedTime}`;
         }
 
-        // Function to format time based on GMT+4 (GST)
+        // Function to format time
         function formatTime(dateTimeString) {
             const dateTime = new Date(dateTimeString);
-            console.log("format:" + dateTimeString);
 
-            dateTime.setUTCHours(dateTime.getUTCHours() + 4);
-
-            const hours = dateTime.getUTCHours();
-            const minutes = dateTime.getUTCMinutes();
+            const hours = dateTime.getHours();
+            const minutes = dateTime.getMinutes();
+            const formattedHours = hours < 10 ? `0${hours}` : hours;
             const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
-            return `${hours}:${formattedMinutes}`;
+            return `${formattedHours}:${formattedMinutes}`;
         }
 
         // Get the date on page load
