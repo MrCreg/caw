@@ -13,14 +13,14 @@
         var currentDate = new Date();
 
         const md = new Date("2023-11-29T09:00:00").getTimezoneOffset();
-        const meetingDate = new Date("2023-11-29T09:00:00");
+        var meetingDate = new Date("2023-11-29T09:00:00");
 
         var currentTime = currentDate.getTime();
 
-if (md != 0) {
-    //there is a timezone ofset inroduced, so fixit
-    fixedMeetingDate = meetingDate.getUTCDate();
-}
+        // If there is a timezone offset, adjust the meeting date
+        if (md !== 0) {
+            meetingDate = new Date(meetingDate.getTime() - md * 60 * 1000);
+        }
 
         // Function to display output on the HTML page
         function displayOutput(output) {
@@ -30,13 +30,12 @@ if (md != 0) {
 
         displayOutput("Current: " + currentDate + " Time: " + currentTime);
         displayOutput("Meeting: " + meetingDate + " Meet Time: " + md);
-        displayOutput("Fixed Meeting: " + fixedMeetingDate + " Meet Time: " + md);
-        displayOutput("Meeting: " + meetingDate.getMonth());
-        displayOutput("Current: " + currentDate.getMonth());
-        displayOutput("Meeting: " + meetingDate.getDate());
-        displayOutput("Current: " + currentDate.getDate());
-        displayOutput("Meeting: " + meetingDate.getFullYear());
-        displayOutput("Current: " + currentDate.getFullYear());
+        displayOutput("Meeting: " + meetingDate.getUTCMonth());
+        displayOutput("Current: " + currentDate.getUTCMonth());
+        displayOutput("Meeting: " + meetingDate.getUTCDate());
+        displayOutput("Current: " + currentDate.getUTCDate());
+        displayOutput("Meeting: " + meetingDate.getUTCFullYear());
+        displayOutput("Current: " + currentDate.getUTCFullYear());
     </script>
 
 </body>
