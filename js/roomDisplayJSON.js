@@ -2,8 +2,7 @@
 //p.s guided access on ipad pin is 7879
 var currentDate;
 currentDate = new Date();
-const urlParams = new URLSearchParams(window.location.search);
-const classroomCode = urlParams.get('room');
+
 
     // Function to fetch meeting data from a JSON file
     async function fetchMeetingData(jsonFileURL) {
@@ -31,7 +30,7 @@ function parseJSONData(jsonData) {
 console.log("parsing JSON");
     jsonData.forEach(item => {
         // Filter meetings for the desired classroom, e.g., "C-1-7" passed in QueryString
-        if (item.ClassroomCode === classroomCode) {
+        if (item.ClassroomCode === room) {
             // Add the extracted meeting information to the array
             console.log("found: " + item.UseCaseCode);
             meetings.push({
