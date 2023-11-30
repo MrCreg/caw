@@ -16,6 +16,17 @@
 
 (C)EAT
     <script>
+    var start = new Date("2023-11-30 14:00:00");
+    var end = new Date("2023-11-30 22:00:00");
+
+    var duration = end.getTime() - start.getTime();
+     // Display start and end times
+     document.getElementById('output').innerHTML = `
+            <p>Start Time: ${start}</p>
+            <p>End Time: ${end}</p>
+            <p>DurationMS: ${duration}</p>
+        `;
+
     
     </script>
 
