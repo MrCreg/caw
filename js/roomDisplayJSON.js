@@ -57,8 +57,9 @@ console.log("parsing JSON");
 
 
 function fixIpadTimes(timeToBeFixed) {
-    var toBeFixed = new Date(timeToBeFixed)
-    const TzOffset = new Date(timeToBeFixed).getTimezoneOffset();
+    
+    var toBeFixed = new Date(timeToBeFixed.replace(" ", "T"))
+    const TzOffset = new Date(timeToBeFixed.replace(" ", "T")).getTimezoneOffset();
 
     var adjustment = TzOffset * 60 * 1000;
     var timeFixed;
