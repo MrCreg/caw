@@ -37,9 +37,9 @@ console.log("parsing JSON");
                 uid: item.LogId,
                 start: item.StartDate,
                 end: item.EndDate,
-                summary: item.UseCaseCode,
-                description: item.Remarks,
-                location: item.ClassroomCode
+                title: item.ClassroomTitle,
+                company: item.CompanyName,
+                cocode: item.CompanyCode,
                 // Add other properties as needed
             });
         }
@@ -111,9 +111,15 @@ function generateMeetingInfo(meeting) {
 
     return `
             <div class="${meetingClasses}">
-                    <h1>${formatTime(meeting.start)} to ${formatTime(meeting.end)} (${diffString})</h1>
-                    <h3>Booked By: ${meeting.summary}</h3>
-                </div>
+            <div class="logo-container">
+            <img id="companyLogo" src="../images/${meeting.cocode}.png" alt="Company Logo">
+            </div>
+                        <h1>${meeting.title}</h1>
+            <div class="timeContainer">
+                        <h2>${meeting.start}- ${meeting.end}</h2>
+                        <h2>${diffString}</h2>
+                    </div>
+                    </div>
             `;
 }
 

@@ -81,12 +81,24 @@ main {
 }
 
 .meeting-info {
-    border: 1px solid #3498db;
-    padding: 0.4rem;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    background-color: #f0f8ff; /* AliceBlue */
-}
+    display: flex;
+    align-items: center;
+      border: 1px solid #3498db;
+      padding: 0.4rem;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      background-color: #f0f8ff; /* AliceBlue */
+  }
+  
+  .logo-container {
+      margin-right: 10px; /* Adjust as needed for spacing between logo and text */
+  }
+  
+  #companyLogo {
+      max-width: 100%; /* Ensure the logo doesn't exceed its container width */
+  }
+
+  
 .meeting-info.in-progress {
     background-color: #ffcccb; /* Light red background for in-progress meeting */
     border: 1px solid #ff4136; /* Red border for in-progress meeting */
