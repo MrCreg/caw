@@ -39,7 +39,7 @@ console.log("parsing JSON");
                 end: item.EndDate,
                 title: item.ClassroomTitle,
                 company: item.CompanyName,
-                cocode: item.CompanyCode,
+                cocode: item.CompanyCode
                 // Add other properties as needed
             });
         }
@@ -112,11 +112,11 @@ function generateMeetingInfo(meeting) {
     return `
             <div class="${meetingClasses}">
             <div class="logo-container">
-            <img id="companyLogo" src="../images/${meeting.cocode}.png" alt="Company Logo">
+            <img id="companyLogo" src="../images/${(meeting.cocode).toLowerCase()}.png" alt="Company Logo">
             </div>
                         <h1>${meeting.title}</h1>
             <div class="timeContainer">
-                        <h2>${meeting.start}- ${meeting.end}</h2>
+                        <h2>${fixIpadTimes(meeting.start)}- ${fixIpadTimes(meeting.end)}</h2>
                         <h2>${diffString}</h2>
                     </div>
                     </div>
