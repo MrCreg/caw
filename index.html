@@ -15,16 +15,26 @@ var ICS = "2023-11-30T09:00:00";
         const TzOffset = new Date(ICS).getTimezoneOffset();
         
         var origmeetingDate = new Date(ICS);
-var fixedmeetingdate;
+var meetingdate;
         var currentTime = currentDate.getTime();
+ 
+ 
+ 
+        // Get user agent and OS information
+        const platform = navigator.platform;
 
+            //if we are on ipad, fix the times
+        if (platform.includes("iPad"))
+        {
+            
+        
         // If there is a timezone offset, adjust the meeting date
         if (TzOffset !== 0) {
-            console.log("fixing offset");
             var adjustment = TzOffset * 60 * 1000;
-            console.log("adjustment" + adjustment);
-            fixedmeetingDate = new Date(origmeetingDate.getTime() + adjustment);
+            meetingDate = new Date(origmeetingDate.getTime() + adjustment);
         }
+
+    }
 
         // Function to display output on the HTML page
         function displayOutput(output) {
@@ -36,25 +46,11 @@ var fixedmeetingdate;
         displayOutput("CURRENT_TZO: " + currentDate.getTimezoneOffset());
         displayOutput("<hr/>");
         displayOutput("ORIG MEET TZ OFFSET:" + TzOffset)
-        displayOutput("ORIG Meeting: " + origmeetingDate);
-        displayOutput("<hr/>");
-        displayOutput("FIXED Meeting: " + fixedmeetingDate);
-        displayOutput("<hr/>");
-        displayOutput("Meeting: " + fixedmeetingDate.getUTCMonth());
-        displayOutput("Current: " + currentDate.getUTCMonth());
-        displayOutput("Meeting: " + fixedmeetingDate.getUTCDate());
-        displayOutput("Current: " + currentDate.getUTCDate());
-        displayOutput("Meeting: " + fixedmeetingDate.getUTCFullYear());
-        displayOutput("Current: " + currentDate.getUTCFullYear());
-
-
-         // Get user agent and OS information
-         const userAgent = navigator.userAgent;
-        const platform = navigator.platform;
+        displayOutput("<h2>Meeting: " + meetingDate);
+        displayOutput("</h2><hr/>");
 
         // Display information on the page
-        document.write("<hr/><p>User Agent: " + userAgent + "</p>");
-        document.write("<p>Operating System: " + platform + "</p>");
+        document.write("<p>OS: " + platform + "</p>");
 
     </script>
 
