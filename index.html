@@ -27,7 +27,7 @@ var ICS = "2023-11-30T09:00:00";
         // If there is a timezone offset, adjust the meeting date
         if (TzOffset !== 0) {
             var adjustment = TzOffset * 60 * 1000;
-            meetingDate = new Date(origmeetingDate.getTime() + adjustment);
+            meetingDate = new Date(meetingDate.getTime() + adjustment);
         }
 
   //  }
