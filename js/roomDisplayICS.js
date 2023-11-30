@@ -81,13 +81,15 @@
         }
 
         function fixIpadTimes(timeToBeFixed) {
+            var toBeFixed = new Date(timeToBeFixed)
             const TzOffset = new Date(timeToBeFixed).getTimezoneOffset();
+            
             var adjustment = TzOffset * 60 * 1000;
             var timeFixed;
 
             // If there is a timezone offset, adjust the meeting time
             if (TzOffset !== 0) {
-                timeFixed = new Date(timeToBeFixed.getTime() + adjustment);
+                timeFixed = new Date(toBeFixed.getTime() + adjustment);
             }
             
             return timeFixed;
