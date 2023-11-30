@@ -237,10 +237,10 @@ function formatTime(dateTimeString) {
 }
 
 
-fetchMeetingData('../classrooms.json');
+fetchMeetingData('../data/classrooms.json');
 
 //And run every minute
 setInterval(function () {
-    fetchMeetingData('../classrooms.json');
+    fetchMeetingData('../data/classrooms.json');
 
 }, 60000); // Check every minute
