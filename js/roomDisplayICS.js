@@ -71,8 +71,6 @@
             return startTimeA - startTimeB;
         });
 
-            
-console.log(meetings);
             return meetings;
         }
 
@@ -82,18 +80,38 @@ console.log(meetings);
             return match ? match[1] : null;
         }
 
+        function fixIpadTimes(timeToBeFixed) {
+            const TzOffset = new Date(timeToBeFixed).getTimezoneOffset();
+            var adjustment = TzOffset * 60 * 1000;
+            var timeFixed;
+
+            // If there is a timezone offset, adjust the meeting time
+            if (TzOffset !== 0) {
+                timeFixed = new Date(timeToBeFixed.getTime() + adjustment);
+            }
+            
+            return timeFixed;
+        }
+
         // Function to generate meeting information
         function generateMeetingInfo(meeting) {
-            const startTime = new Date(meeting.start);
-            const endTime = new Date(meeting.end);
+           
+            //Fix iPadTimes
+            if (navigator.platform.includes("iPad"))
+            {
+                const startTime = fixIpadTimes(meeting.start);
+                const endTime = fixIpadTimes(meeting.end);
+                
+            } else {
+                const startTime = new Date(meeting.start);
+                const endTime = new Date(meeting.end);
+            }
+
             const durationMS = endTime.getTime() - startTime.getTime();
             const isInProgress = startTime <= currentDate && currentDate <= endTime;
 
-
-
             // Check if the meeting has ended
             const hasEnded = currentDate > endTime;
-
 
             const minutesDiff = Math.floor(durationMS / (1000 * 60));
             const hoursDiff = Math.floor(minutesDiff / 60);
@@ -138,9 +156,19 @@ console.log(meetings);
 
             // Loop through meetings and check if there's one in progress
             for (var i = 0; i < meetings.length; i++) {
+
+                //Fix iPadTimes
+            if (navigator.platform.includes("iPad"))
+            {
+                var startTime = fixIpadTimes(meetings[i].start);
+                var endTime = fixIpadTimes(meetings[i].end);
+                
+            } else {
                 var startTime = new Date(meetings[i].start);
                 var endTime = new Date(meetings[i].end);
+            }
 
+                
                 if (startTime <= currentTime && currentTime <= endTime) {
                     return true;
                 }
