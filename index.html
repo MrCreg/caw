@@ -3,44 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Script</title>
+    <title>Room Display Main</title>
 </head>
 <body>
 
     <div id="output"></div>
-
+(C)EAT
     <script>
-        var currentDate = new Date();
-var ICS = "2023-11-30T09:00:00";
-        
-        
-        var meetingDate = new Date(ICS);
-        const TzOffset = new Date(ICS).getTimezoneOffset();
-        var currentTime = currentDate.getTime();
- 
-
-            //if we are on ipad, fix the times
-        if (navigator.platform.includes("iPad"))
-       {
-        // If there is a timezone offset, adjust the meeting date
-        if (TzOffset !== 0) {
-            var adjustment = TzOffset * 60 * 1000;
-            meetingDate = new Date(meetingDate.getTime() + adjustment);
-        }
-
-    }
-
-        // Function to display output on the HTML page
-        function displayOutput(output) {
-            var outputElement = document.getElementById('output');
-            outputElement.innerHTML += '<p>' + output + '</p>';
-        }
-
-        displayOutput("Current: " + currentDate);
-        displayOutput("CURRENT_TZO: " + currentDate.getTimezoneOffset());
-        displayOutput("<hr/>");
-        displayOutput("Meeting: " + meetingDate);
-        displayOutput("<hr/>");
+    
     </script>
 
 </body>
