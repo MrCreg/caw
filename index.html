@@ -20,8 +20,8 @@ var ICS = "2023-11-30T09:00:00";
  
 
             //if we are on ipad, fix the times
-       // if (navigator.platform.includes("iPad"))
-       // {
+        if (navigator.platform.includes("iPad"))
+       {
             
         
         // If there is a timezone offset, adjust the meeting date
@@ -30,7 +30,7 @@ var ICS = "2023-11-30T09:00:00";
             meetingDate = new Date(meetingDate.getTime() + adjustment);
         }
 
-  //  }
+    }
 
         // Function to display output on the HTML page
         function displayOutput(output) {
