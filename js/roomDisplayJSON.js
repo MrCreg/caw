@@ -116,7 +116,7 @@ function generateMeetingInfo(meeting) {
             </div>
                         <h1>${meeting.title}</h1>
             <div class="timeContainer">
-                        <h2>${fixIpadTimes(meeting.start)}- ${fixIpadTimes(meeting.end)}</h2>
+                        <h2>${formatTime(meeting.start)}- ${formatTime(meeting.end)}</h2>
                         <h2>${diffString}</h2>
                     </div>
                     </div>
