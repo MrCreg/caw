@@ -11,15 +11,16 @@
 
     <script>
         var currentDate = new Date();
-
-        const md = new Date("2023-11-29T09:00:00").getTimezoneOffset();
-        var meetingDate = new Date("2023-11-29T09:00:00");
-
+var ICS = "2023-11-30T09:00:00";
+        const TzOffset = new Date(ICS).getTimezoneOffset();
+        
+        var origmeetingDate = new Date(ICS);
+var fixedmeetingdate;
         var currentTime = currentDate.getTime();
 
         // If there is a timezone offset, adjust the meeting date
-        if (md !== 0) {
-            meetingDate = new Date(meetingDate.getTime() - md * 60 * 1000);
+        if (TzOffset !== 0) {
+            fixedmeetingDate = new Date(meetingDate.getTime() - md * 60 * 1000);
         }
 
         // Function to display output on the HTML page
@@ -28,8 +29,14 @@
             outputElement.innerHTML += '<p>' + output + '</p>';
         }
 
-        displayOutput("Current: " + currentDate + " Time: " + currentTime);
-        displayOutput("Meeting: " + meetingDate + " Meet Time: " + md);
+        displayOutput("Current: " + currentDate);
+        displayOutput("CURRENT_TZO: " + currentDate.getTimezoneOffset();
+        displayOutput("<hr/>");
+        displayOutput("ORIG MEET TZ OFFSET:" + TzOffset)
+        displayOutput("ORIG Meeting: " + meetingDate);
+        displayOutput("<hr/>");
+        displayOutput("FIXED Meeting: " + fixedmeetingDate);
+        displayOutput("<hr/>");
         displayOutput("Meeting: " + meetingDate.getUTCMonth());
         displayOutput("Current: " + currentDate.getUTCMonth());
         displayOutput("Meeting: " + meetingDate.getUTCDate());
