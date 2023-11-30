@@ -210,8 +210,10 @@ while (meetingStatusElement.firstChild) {
           
                 
 
-                var nextMeeting = meetings.find(function (meeting) {
-                    var startTime = new Date(meeting.start);
+        var nextMeeting = meetings.find(function (meeting) {
+            
+            var startTime =  navigator.platform.includes("iPad") ? fixIpadTimes(meeting.start): new Date(meeting.start);
+        
 
                     // Check if the meeting is for the current day
                     if (startTime >= currentDate) {
@@ -221,7 +223,8 @@ while (meetingStatusElement.firstChild) {
 
                 // Display "Room Available for X minutes/hours until the next booking"
                 if (nextMeeting) {
-                    var startTime = new Date(nextMeeting.start);
+                    var startTime =  navigator.platform.includes("iPad") ? fixIpadTimes(meeting.start): new Date(meeting.start);
+        
                     var timeDifference = startTime - currentDate;
                     
                     var minutesDifference = Math.floor(timeDifference / (1000 * 60));
