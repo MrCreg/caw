@@ -2,6 +2,8 @@
 //p.s guided access on ipad pin is 7879
 var currentDate;
 currentDate = new Date();
+const urlParams = new URLSearchParams(window.location.search);
+const classroomCode = urlParams.get('room');
 
     // Function to fetch meeting data from a JSON file
     async function fetchMeetingData(jsonFileURL) {
@@ -27,26 +29,22 @@ currentDate = new Date();
 function parseJSONData(jsonData) {
     const meetings = [];
 
-    // Iterate through each meeting in the JSON array
-    for (const meeting of jsonData) {
-        const start = meeting.StartDate;
-        const end = meeting.EndDate;
-        const summary = meeting.UseCaseCode;
-        const description = meeting.Remarks;
-        const location = meeting.ClassroomCode;
-
-        // Check if the meeting is scheduled for the current day
-        const meetingDate = new Date(start);
-
-        if (
-            meetingDate.getDate() === currentDate.getDate() &&
-            meetingDate.getMonth() === currentDate.getMonth() &&
-            meetingDate.getFullYear() === currentDate.getFullYear()
-        ) {
+    jsonData.forEach(item => {
+        // Filter meetings for the desired classroom, e.g., "C-1-7" passed in QueryString
+        if (item.ClassroomCode === classroomCode) {
             // Add the extracted meeting information to the array
-            meetings.push({ start, end, summary, description, location });
+            meetings.push({
+                uid: item.LogId,
+                start: item.StartDate,
+                end: item.EndDate,
+                summary: item.UseCaseCode,
+                description: item.Remarks,
+                location: item.ClassroomCode
+                // Add other properties as needed
+            });
         }
-    }
+    });
+
     // Sort meetings by the "start" field
     meetings.sort(function (a, b) {
         const startTimeA = new Date(a.start);

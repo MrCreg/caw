@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Room Display</title>
+    <link rel="stylesheet" href="../css/room.css">
+    <script>
+        var room = "C-1-7";
+    </script>
+    <!-- Link to External JavaScript File -->
+    <script src=`../js/roomDisplayJSON.js?room=${room}` defer></script>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header id="header">
+        <div class="left-section"><span id="roomCodeDisplay"></span></div>
+        <div class="right-section" id="meetingStatus">Room Available</div>
+    </header>
+
+    <!-- Main Meeting Data Section -->
+    <main id="meetingData">
+        <!-- Dynamic meeting data will be inserted here -->
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="left-section timeDisplay" id="currentTime"></div>
+        <img src="../images/eatlogo.png" alt="Logo" class="footer-logo">
+    </footer>
+    
+    <script>
+        // Update the content of the span element with the classroomCode value
+        document.getElementById('roomCodeDisplay').textContent = classroomCode;
+    </script>
+
+</body>
+</html>
