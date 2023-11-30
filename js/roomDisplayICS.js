@@ -101,7 +101,7 @@
             var endTime;
 
             //Fix iPadTimes
-            if (navigator.platform.includes("iPad"))
+            if (navigator.platform.includes("Win"))
             {
                 startTime = fixIpadTimes(meeting.start);
                 endTime = fixIpadTimes(meeting.end);
@@ -162,7 +162,7 @@
             for (var i = 0; i < meetings.length; i++) {
 
                 //Fix iPadTimes
-            if (navigator.platform.includes("iPad"))
+            if (navigator.platform.includes("Win"))
             {
                 var startTime = fixIpadTimes(meetings[i].start);
                 var endTime = fixIpadTimes(meetings[i].end);
