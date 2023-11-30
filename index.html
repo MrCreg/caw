@@ -46,6 +46,16 @@ var fixedmeetingdate;
         displayOutput("Current: " + currentDate.getUTCDate());
         displayOutput("Meeting: " + fixedmeetingDate.getUTCFullYear());
         displayOutput("Current: " + currentDate.getUTCFullYear());
+
+
+         // Get user agent and OS information
+         const userAgent = navigator.userAgent;
+        const platform = navigator.platform;
+
+        // Display information on the page
+        document.write("<hr/><p>User Agent: " + userAgent + "</p>");
+        document.write("<p>Operating System: " + platform + "</p>");
+
     </script>
 
 </body>
