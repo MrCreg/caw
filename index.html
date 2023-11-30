@@ -12,10 +12,10 @@
     <script>
         var currentDate = new Date();
 var ICS = "2023-11-30T09:00:00";
-        const TzOffset = new Date(ICS).getTimezoneOffset();
         
-        var origmeetingDate = new Date(ICS);
-var meetingdate;
+        
+        var meetingDate = new Date(ICS);
+        const TzOffset = new Date(ICS).getTimezoneOffset();
         var currentTime = currentDate.getTime();
  
  
