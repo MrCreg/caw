@@ -20,7 +20,10 @@ var fixedmeetingdate;
 
         // If there is a timezone offset, adjust the meeting date
         if (TzOffset !== 0) {
-            fixedmeetingDate = new Date(origmeetingDate.getTime() - TzOffset * 60 * 1000);
+            console.log("fixing offset");
+            var adjustment = TzOffset * 60 * 1000;
+            console.log("adjustment" + adjustment);
+            fixedmeetingDate = new Date(origmeetingDate.getTime() + adjustment);
         }
 
         // Function to display output on the HTML page
@@ -33,7 +36,7 @@ var fixedmeetingdate;
         displayOutput("CURRENT_TZO: " + currentDate.getTimezoneOffset());
         displayOutput("<hr/>");
         displayOutput("ORIG MEET TZ OFFSET:" + TzOffset)
-        displayOutput("ORIG Meeting: " + fixedmeetingDate);
+        displayOutput("ORIG Meeting: " + origmeetingDate);
         displayOutput("<hr/>");
         displayOutput("FIXED Meeting: " + fixedmeetingDate);
         displayOutput("<hr/>");
