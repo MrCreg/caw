@@ -28,11 +28,12 @@ const classroomCode = urlParams.get('room');
 // Function to parse JSON data and extract relevant information
 function parseJSONData(jsonData) {
     const meetings = [];
-
+console.log("parsing JSON");
     jsonData.forEach(item => {
         // Filter meetings for the desired classroom, e.g., "C-1-7" passed in QueryString
         if (item.ClassroomCode === classroomCode) {
             // Add the extracted meeting information to the array
+            console.log("found: " + item.UseCaseCode);
             meetings.push({
                 uid: item.LogId,
                 start: item.StartDate,
