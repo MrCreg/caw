@@ -96,15 +96,19 @@
         // Function to generate meeting information
         function generateMeetingInfo(meeting) {
            
+            //create function wide vars for start and end times (that may be corrected)
+            var startTime;
+            var endTime;
+
             //Fix iPadTimes
             if (navigator.platform.includes("iPad"))
             {
-                const startTime = fixIpadTimes(meeting.start);
-                const endTime = fixIpadTimes(meeting.end);
+                startTime = fixIpadTimes(meeting.start);
+                endTime = fixIpadTimes(meeting.end);
                 
             } else {
-                const startTime = new Date(meeting.start);
-                const endTime = new Date(meeting.end);
+                startTime = new Date(meeting.start);
+                endTime = new Date(meeting.end);
             }
 
             const durationMS = endTime.getTime() - startTime.getTime();
