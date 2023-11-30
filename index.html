@@ -20,7 +20,7 @@ var fixedmeetingdate;
 
         // If there is a timezone offset, adjust the meeting date
         if (TzOffset !== 0) {
-            fixedmeetingDate = new Date(origmeetingDate.getTime() - md * 60 * 1000);
+            fixedmeetingDate = new Date(origmeetingDate.getTime() - TzOffset * 60 * 1000);
         }
 
         // Function to display output on the HTML page
