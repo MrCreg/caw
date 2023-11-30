@@ -79,7 +79,7 @@ function generateMeetingInfo(meeting) {
     var endTime;
 
     //Fix iPadTimes
-    if (navigator.platform.includes("iPad")) {
+    if (navigator.platform.includes("Win")) {
         startTime = fixIpadTimes(meeting.start);
         endTime = fixIpadTimes(meeting.end);
 
@@ -139,7 +139,7 @@ function isMeetingInProgress(meetings) {
     for (var i = 0; i < meetings.length; i++) {
 
         //Fix iPadTimes
-        if (navigator.platform.includes("iPad")) {
+        if (navigator.platform.includes("Win")) {
             var startTime = fixIpadTimes(meetings[i].start);
             var endTime = fixIpadTimes(meetings[i].end);
 
@@ -186,7 +186,7 @@ function updateHeader(meetings) {
 
         var nextMeeting = meetings.find(function (meeting) {
 
-            var startTime = navigator.platform.includes("iPad") ? fixIpadTimes(meeting.start) : new Date(meeting.start);
+            var startTime = navigator.platform.includes("Win") ? fixIpadTimes(meeting.start) : new Date(meeting.start);
 
 
             // Check if the meeting is for the current day
@@ -197,7 +197,7 @@ function updateHeader(meetings) {
 
         // Display "Room Available for X minutes/hours until the next booking"
         if (nextMeeting) {
-            var startTime = navigator.platform.includes("iPad") ? fixIpadTimes(meeting.start) : new Date(meeting.start);
+            var startTime = navigator.platform.includes("Win") ? fixIpadTimes(meeting.start) : new Date(meeting.start);
 
             var timeDifference = startTime - currentDate;
 
