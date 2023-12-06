@@ -27,12 +27,11 @@ currentDate = new Date();
 // Function to parse JSON data and extract relevant information
 function parseJSONData(jsonData) {
     const meetings = [];
-console.log("parsing JSON");
     jsonData.forEach(item => {
         // Filter meetings for the desired classroom, e.g., "C-1-7" passed in QueryString
         if (item.ClassroomCode === room) {
             // Add the extracted meeting information to the array
-            console.log("found: " + item.UseCaseCode);
+
             meetings.push({
                 uid: item.LogId,
                 start: item.StartDate,
@@ -176,7 +175,7 @@ function updateHeader(meetings) {
         blinkSpan.classList.add('blink'); // Add the "blink" class to the span
 
         // Set the text content inside the span
-        blinkSpan.textContent = 'Meeting In Progress';
+        blinkSpan.textContent = 'In Progress';
 
         // Clear the existing content and append the span
         meetingStatusElement.innerHTML = '';

@@ -1,0 +1,2 @@
+# Exclude the data files, no need to track changes
+classrooms.json
