@@ -263,10 +263,10 @@ while (meetingStatusElement.firstChild) {
         }
 
         
-        fetchMeetingData('cg6.ics');
+        fetchMeetingData('cg4.ics');
 
         //And run every minute
         setInterval(function () {
-            fetchMeetingData('cg6.ics');
+            fetchMeetingData('cg4.ics');
 
         }, 60000); // Check every minute
