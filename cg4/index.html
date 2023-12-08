@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meeting Room Display</title>
     <link rel="stylesheet" href="../css/room.css">
+    <script>
+        var room = "C-G-4";
+    </script>
     <!-- Link to External JavaScript File -->
-    <script src="../js/roomDisplayICS.js?room=cg4" defer></script>
+    <script src="../js/roomDisplayJSON.js" defer></script>
 </head>
 <body>
 
     <!-- Header Section -->
     <header id="header">
-        <div class="left-section">C-G-4</div>
+        <div class="left-section"><span id="roomCodeDisplay"></span></div>
         <div class="right-section" id="meetingStatus">Room Available</div>
     </header>
 
@@ -26,6 +29,11 @@
         <div class="left-section timeDisplay" id="currentTime"></div>
         <img src="../images/eatlogo.png" alt="Logo" class="footer-logo">
     </footer>
+    
+    <script>
+        // Update the content of the span element with the classroomCode value
+        document.getElementById('roomCodeDisplay').textContent = room;
+    </script>
 
 </body>
 </html>
