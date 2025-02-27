@@ -11,7 +11,9 @@
       }
       body {
         font-family: Arial, sans-serif;
-        background: #e2e2e2; /* Just a placeholder background */
+        /* Use the background image */
+        background: url("../images/EY-NewDuneGoldBG.jpg") center center / cover
+          no-repeat;
         color: #333;
       }
 
@@ -68,12 +70,12 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid #eee;
-        padding: 12px 0;
-      }
-
-      .meeting:last-child {
-        border-bottom: none;
+        /* Round corners */
+        border-radius: 12px;
+        background-color: #fff;
+        border: 1px solid #eee;
+        padding: 12px 16px;
+        margin-bottom: 16px;
       }
 
       .meeting-info {
