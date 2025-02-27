@@ -1,39 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meeting Room Display</title>
-    <link rel="stylesheet" href="../css/room.css">
-    <script>
-        var room = "C-G-6";
-    </script>
-    <!-- Link to External JavaScript File -->
-    <script src="../js/roomDisplayJSON.js" defer></script>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Conference Room UI</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background: #e2e2e2; /* Just a placeholder background */
+        color: #333;
+      }
 
-    <!-- Header Section -->
-    <header id="header">
-        <div class="left-section"><span id="roomCodeDisplay"></span></div>
-        <div class="right-section" id="meetingStatus">Room Available</div>
-    </header>
+      /* Main container */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 24px;
+        position: relative;
+      }
 
-    <!-- Main Meeting Data Section -->
-    <main id="meetingData">
-        <!-- Dynamic meeting data will be inserted here -->
-    </main>
+      /* Top section with time & room info */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
 
-    <!-- Footer Section -->
-    <footer>
-        <div class="left-section timeDisplay" id="currentTime"></div>
-        <a href="../index.html"><img src="../images/eatlogo.png" alt="Logo" class="footer-logo"></a>
-    </footer>
-    
-    <script>
-        // Update the content of the span element with the classroomCode value
-        document.getElementById('roomCodeDisplay').textContent = room;
-    </script>
+      .time {
+        font-size: 2.5rem;
+        font-weight: bold;
+      }
 
-</body>
+      .room-info {
+        text-align: right;
+        font-size: 1rem;
+        color: #555;
+      }
+
+      /* Schedule/meetings panel */
+      .schedule-panel {
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        padding: 16px;
+      }
+
+      .schedule-header {
+        margin-bottom: 16px;
+      }
+
+      .availability {
+        font-size: 1.4rem;
+        font-weight: bold;
+      }
+
+      .availability-time {
+        font-size: 1rem;
+        color: #555;
+        margin-top: 4px;
+      }
+
+      .meeting {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #eee;
+        padding: 12px 0;
+      }
+
+      .meeting:last-child {
+        border-bottom: none;
+      }
+
+      .meeting-info {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .meeting-title {
+        font-weight: bold;
+        margin-bottom: 4px;
+      }
+
+      .meeting-time {
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      .join-btn {
+        background-color: #0078d7;
+        border: none;
+        border-radius: 4px;
+        color: #fff;
+        padding: 8px 16px;
+        cursor: pointer;
+      }
+
+      .join-btn:hover {
+        background-color: #005a9e;
+      }
+
+      /* Cortana prompt at bottom-left */
+      .cortana-prompt {
+        position: fixed;
+        bottom: 16px;
+        left: 16px;
+        background-color: #fff;
+        border-radius: 20px;
+        padding: 10px 20px;
+        font-size: 0.9rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header with time and room info -->
+      <div class="header">
+        <div class="time">9:35 AM</div>
+        <div class="room-info">
+          <div>Conference room 154684354</div>
+          <div>555-123-4567</div>
+        </div>
+      </div>
+
+      <!-- Schedule/meetings panel -->
+      <div class="schedule-panel">
+        <div class="schedule-header">
+          <div class="availability">Available</div>
+          <div class="availability-time">9:00 AM - 10:00 AM</div>
+        </div>
+
+        <!-- Example Meeting Items -->
+        <div class="meeting">
+          <div class="meeting-info">
+            <div class="meeting-title">Daily SCRUM</div>
+            <div class="meeting-time">10:00 AM - 11:00 AM</div>
+          </div>
+          <button class="join-btn">Join</button>
+        </div>
+
+        <div class="meeting">
+          <div class="meeting-info">
+            <div class="meeting-title">Available</div>
+            <div class="meeting-time">10:00 AM - 11:00 AM</div>
+          </div>
+          <!-- No join button here -->
+        </div>
+
+        <div class="meeting">
+          <div class="meeting-info">
+            <div class="meeting-title">Daily SCRUM</div>
+            <div class="meeting-time">10:00 AM - 11:00 AM</div>
+          </div>
+          <button class="join-btn">Join</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cortana prompt -->
+    <div class="cortana-prompt">Say “Cortana, join my meeting”</div>
+  </body>
 </html>
