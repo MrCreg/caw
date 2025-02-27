@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Conference Room UI</title>
+    <title>Conference Room UI (iPad Layout)</title>
     <style>
       * {
         box-sizing: border-box;
@@ -12,9 +12,10 @@
       body {
         font-family: Arial, sans-serif;
         /* Use the background image */
-        background: url("../images/EY-NewDuneGoldBG.jpg") center center / cover
-          no-repeat;
+        background: url("EY-NewDuneGoldBG.png") center center / cover no-repeat;
         color: #333;
+        /* Adjust a bit for typical iPad resolution or orientation if needed.
+         Additional media queries could be added here for fine-tuning. */
       }
 
       /* Main container */
@@ -25,21 +26,34 @@
         position: relative;
       }
 
+      /* Columns for layout: 25% / 75% */
+      .columns {
+        display: flex;
+      }
+
+      .left-col {
+        flex: 0 0 25%;
+        padding: 0 16px;
+      }
+
+      .right-col {
+        flex: 0 0 75%;
+        padding: 0 16px;
+      }
+
       /* Top section with time & room info */
       .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
         margin-bottom: 24px;
       }
 
       .time {
         font-size: 2.5rem;
         font-weight: bold;
+        margin-bottom: 16px;
       }
 
       .room-info {
-        text-align: right;
+        text-align: left;
         font-size: 1rem;
         color: #555;
       }
@@ -51,26 +65,24 @@
         padding: 16px;
       }
 
-      .schedule-header {
-        margin-bottom: 16px;
-      }
-
-      .availability {
+      /* Banner for Available/Busy */
+      .schedule-banner {
         font-size: 1.4rem;
         font-weight: bold;
+        text-align: center;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        color: #fff;
+        background-color: #28a745; /* Default: green for 'Available' */
+        transition: background-color 0.3s;
       }
 
-      .availability-time {
-        font-size: 1rem;
-        color: #555;
-        margin-top: 4px;
-      }
-
+      /* Meeting items */
       .meeting {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        /* Round corners */
         border-radius: 12px;
         background-color: #fff;
         border: 1px solid #eee;
@@ -93,78 +105,165 @@
         color: #666;
       }
 
-      .join-btn {
-        background-color: #0078d7;
-        border: none;
-        border-radius: 4px;
-        color: #fff;
-        padding: 8px 16px;
-        cursor: pointer;
-      }
-
-      .join-btn:hover {
-        background-color: #005a9e;
-      }
-
-      /* Cortana prompt at bottom-left */
+      /* Random Quote (previously cortana-prompt) */
       .cortana-prompt {
-        position: fixed;
-        bottom: 16px;
-        left: 16px;
         background-color: #fff;
         border-radius: 20px;
         padding: 10px 20px;
         font-size: 0.9rem;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        min-height: 60px;
+        margin-top: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <!-- Header with time and room info -->
-      <div class="header">
-        <div class="time">9:35 AM</div>
-        <div class="room-info">
-          <div>Conference room 154684354</div>
-          <div>555-123-4567</div>
-        </div>
-      </div>
-
-      <!-- Schedule/meetings panel -->
-      <div class="schedule-panel">
-        <div class="schedule-header">
-          <div class="availability">Available</div>
-          <div class="availability-time">9:00 AM - 10:00 AM</div>
-        </div>
-
-        <!-- Example Meeting Items -->
-        <div class="meeting">
-          <div class="meeting-info">
-            <div class="meeting-title">Daily SCRUM</div>
-            <div class="meeting-time">10:00 AM - 11:00 AM</div>
+      <div class="columns">
+        <!-- Left Column (25%) -->
+        <div class="left-col">
+          <div class="header">
+            <!-- Time element dynamically updated -->
+            <div class="time"></div>
+            <div class="room-info">
+              <div>Conference room 154684354</div>
+              <div>555-123-4567</div>
+            </div>
           </div>
-          <button class="join-btn">Join</button>
+          <!-- Random quote area -->
+          <div class="cortana-prompt"></div>
         </div>
 
-        <div class="meeting">
-          <div class="meeting-info">
-            <div class="meeting-title">Available</div>
-            <div class="meeting-time">10:00 AM - 11:00 AM</div>
-          </div>
-          <!-- No join button here -->
-        </div>
+        <!-- Right Column (75%) -->
+        <div class="right-col">
+          <!-- Schedule/meetings panel -->
+          <div class="schedule-panel">
+            <!-- The banner indicating Available or Busy -->
+            <div class="schedule-banner">Available</div>
 
-        <div class="meeting">
-          <div class="meeting-info">
-            <div class="meeting-title">Daily SCRUM</div>
-            <div class="meeting-time">10:00 AM - 11:00 AM</div>
+            <!-- List of meetings for the day -->
+            <div class="meeting">
+              <div class="meeting-info">
+                <div class="meeting-title">Daily SCRUM</div>
+                <div class="meeting-time">10:00 AM - 11:00 AM</div>
+              </div>
+            </div>
+
+            <div class="meeting">
+              <div class="meeting-info">
+                <div class="meeting-title">Project Sync</div>
+                <div class="meeting-time">11:15 AM - 12:00 PM</div>
+              </div>
+            </div>
+
+            <div class="meeting">
+              <div class="meeting-info">
+                <div class="meeting-title">Lunch Break</div>
+                <div class="meeting-time">12:00 PM - 1:00 PM</div>
+              </div>
+            </div>
+
+            <div class="meeting">
+              <div class="meeting-info">
+                <div class="meeting-title">Stakeholder Review</div>
+                <div class="meeting-time">2:00 PM - 3:00 PM</div>
+              </div>
+            </div>
           </div>
-          <button class="join-btn">Join</button>
         </div>
       </div>
     </div>
 
-    <!-- Cortana prompt -->
-    <div class="cortana-prompt">Say “Cortana, join my meeting”</div>
+    <!-- Inline JavaScript to get the current time and fetch random quote -->
+    <script>
+      // Hard-code your meeting times here in 12-hour format
+      // This array can be easily extended or made dynamic.
+      const schedule = [
+        { start: "10:00 AM", end: "11:00 AM" },
+        { start: "11:15 AM", end: "12:00 PM" },
+        { start: "12:00 PM", end: "1:00 PM" },
+        { start: "2:00 PM", end: "3:00 PM" },
+      ];
+
+      // Convert a 12-hour time string (e.g. '10:00 AM') into total minutes from midnight.
+      function parseTimeToMinutes(twelveHour) {
+        // e.g. '10:00 AM' => hours=10, minutes=0, ampm='AM'
+        const [timePart, ampm] = twelveHour.split(" ");
+        let [hour, minute] = timePart.split(":").map(Number);
+        if (ampm.toUpperCase() === "PM" && hour !== 12) {
+          hour += 12;
+        } else if (ampm.toUpperCase() === "AM" && hour === 12) {
+          hour = 0;
+        }
+        return hour * 60 + minute;
+      }
+
+      // Check if current time is within any scheduled meeting.
+      function isBusyNow() {
+        const now = new Date();
+        const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+        // Return true if within any scheduled block.
+        return schedule.some((meeting) => {
+          const start = parseTimeToMinutes(meeting.start);
+          const end = parseTimeToMinutes(meeting.end);
+          // If now is between start and end (exclusive or inclusive?), we consider that busy.
+          return currentMinutes >= start && currentMinutes < end;
+        });
+      }
+
+      // Update current time on the page.
+      function updateTime() {
+        const now = new Date();
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+        const ampm = hours >= 12 ? "PM" : "AM";
+        hours = hours % 12 || 12;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        document.querySelector(
+          ".time"
+        ).textContent = `${hours}:${minutes} ${ampm}`;
+
+        // After updating time, determine if we are busy.
+        const banner = document.querySelector(".schedule-banner");
+        if (isBusyNow()) {
+          banner.textContent = "Busy";
+          banner.style.backgroundColor = "#dc3545"; // red
+        } else {
+          banner.textContent = "Available";
+          banner.style.backgroundColor = "#28a745"; // green
+        }
+      }
+
+      // Fetch a random quote from quotable.io
+      async function fetchRandomQuote() {
+        try {
+          const response = await fetch("http://api.quotable.io/random");
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const data = await response.json();
+          const quote = data.content;
+          const author = data.author;
+          const cortanaPrompt = document.querySelector(".cortana-prompt");
+          cortanaPrompt.textContent = `"${quote}" \u2014 ${author}`;
+        } catch (error) {
+          console.error("Error fetching quote:", error);
+          // If there's an error, fallback text
+          document.querySelector(".cortana-prompt").textContent =
+            'Say "Cortana, join my meeting"';
+        }
+      }
+
+      // Run both functions on page load
+      updateTime();
+      fetchRandomQuote();
+
+      // Update time every second
+      setInterval(updateTime, 1000);
+    </script>
   </body>
 </html>
