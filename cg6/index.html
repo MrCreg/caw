@@ -185,7 +185,7 @@
       </div>
     </div>
 
-    <!-- Inline JavaScript to get the current time and fetch random quote -->
+    <!-- Inline JavaScript to get the current time and fetch a random quote from quotes.json -->
     <script>
       // Hard-code your meeting times here in 12-hour format
       // This array can be easily extended or made dynamic.
@@ -245,32 +245,36 @@
         }
       }
 
-      // Fetch a random quote from new JSON format:
+      // Example quotes.json structure:
       // [
       //   {
-      //     "q": "Death walks faster than the wind...",
-      //     "a": "Hans Christian Andersen",
-      //     "h": "<blockquote>...</blockquote>"
-      //   }
+      //     "q": "Some quote...",
+      //     "a": "Some Author",
+      //     "c": "...",
+      //     "h": "..."
+      //   },
+      //   ...
       // ]
+      // We'll display quoteObj.q and quoteObj.a.
+
       async function fetchRandomQuote() {
         try {
-          // Replace with your endpoint that returns an array with "q", "a", "h"
-          const response = await fetch("https://zenquotes.io/api/random");
+          const response = await fetch("../data/quotes.json");
           if (!response.ok) {
-            throw new Error("Network response was not ok");
+            throw new Error("Could not load quotes.json");
           }
           const data = await response.json();
-          // Suppose data[0].q is the quote, data[0].a is the author
-          const quoteObj = data[0];
-          const quote = quoteObj.q;
-          const author = quoteObj.a;
+          // Choose a random index
+          const randomIndex = Math.floor(Math.random() * data.length);
+          const quoteObj = data[randomIndex];
+          const quote = quoteObj.q; // from JSON sample, 'q' is the quote
+          const author = quoteObj.a; // 'a' is the author
 
           // Display as: "quote" — author
           const cortanaPrompt = document.querySelector(".cortana-prompt");
-          cortanaPrompt.textContent = `"${quote}" \u2014 ${author}`;
+          cortanaPrompt.textContent = `"${quote}" — ${author}`;
         } catch (error) {
-          console.error("Error fetching quote:", error);
+          console.error("Error loading random quote:", error);
           // If there's an error, fallback text
           document.querySelector(".cortana-prompt").textContent =
             'Say "Cortana, join my meeting"';
