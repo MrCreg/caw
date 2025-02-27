@@ -12,38 +12,44 @@
         margin: 0;
         padding: 0;
       }
-
       body {
         font-family: Arial, sans-serif;
         /* Use the background image */
         background: url("../images/EY-NewDuneGoldBG.jpg") center center / cover
           no-repeat;
-        color: #fdf9ef;
-        /* Adjust a bit for typical iPad resolution or orientation if needed.
-         Additional media queries could be added here for fine-tuning. */
+        color: #21a828;
+        /* Force at least 100vh so no white space at the bottom */
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
       }
 
-      /* Main container */
+      /* Main container that also expands to fill available space */
       .container {
-        max-width: 1200px;
-        margin: 0 auto;
+        flex: 1; /* Grow to fill remaining vertical space */
+        display: flex;
+        flex-direction: column;
         padding: 24px;
-        position: relative;
       }
 
       /* Columns for layout: 25% / 75% */
       .columns {
         display: flex;
+        flex: 1; /* Let columns grow to fill container height */
       }
 
       .left-col {
-        flex: 0 0 35%;
+        flex: 0 0 25%;
         padding: 0 16px;
+        display: flex;
+        flex-direction: column;
       }
 
       .right-col {
-        flex: 0 0 65%;
+        flex: 0 0 75%;
         padding: 0 16px;
+        display: flex;
+        flex-direction: column;
       }
 
       /* Top section with time & room info */
@@ -75,10 +81,15 @@
         /* Blur behind the panel (supported in newer iOS Safari) */
         -webkit-backdrop-filter: blur(3px);
         backdrop-filter: blur(3px);
+        flex: 1; /* Fill the column's vertical space */
+        display: flex;
+        flex-direction: column;
       }
 
-      /* Banner for Available/Busy */
-      .schedule-banner {
+      /* The banner for whether the room is Busy or Available.
+         This will be updated by the ICS script in updateHeader().
+         We'll give it an id to target. */
+      #meetingStatus {
         font-size: 1.4rem;
         font-weight: bold;
         text-align: center;
@@ -90,161 +101,117 @@
         transition: background-color 0.3s;
       }
 
-      /* Meeting items */
-      .meeting {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-radius: 12px;
+      /* The meetingData container is where the ICS script will
+         dynamically insert the day's meetings. */
+      #meetingData {
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      /* Example styling for ICS-based meeting items: we’ll let the ICS script
+         generate the actual HTML. You can tweak these classes or IDs.
+      */
+      .meeting-info {
         background-color: #fff;
-        border: 1px solid #eee;
+        color: #333;
+        border-radius: 12px;
         padding: 12px 16px;
         margin-bottom: 16px;
       }
-
-      .meeting-info {
-        display: flex;
-        flex-direction: column;
+      .in-progress {
+        border: 2px solid #dc3545; /* red border if in progress */
       }
-
-      .meeting-title {
-        font-weight: bold;
-        margin-bottom: 4px;
-        color: #333; /* Overriding to dark text since background is white */
+      .past-meeting {
+        opacity: 0.6;
       }
-
-      .meeting-time {
-        font-size: 0.9rem;
-        color: #666;
+      .blink {
+        animation: blinkAnim 1s infinite;
+      }
+      @keyframes blinkAnim {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
       }
 
       /* Random Quote (previously cortana-prompt) */
       .cortana-prompt {
         font-family: Georgia, "Times New Roman", Times, serif;
-        color: #1b1b1b;
-        background-color: #fdf9ef;
+        background-color: #fff;
         border-radius: 20px;
         padding: 10px 20px;
         font-size: 0.9rem;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         min-height: 60px;
-        margin-top: 30%;
+        /* Move the quote box down ~20% if you want - adjusting if needed */
+        margin-top: 20%;
         display: flex;
         flex-direction: column;
         justify-content: center;
       }
+
+      /* Example: if you want to show the current time in a footer, we can style it.
+         The ICS script references 'currentTime' if desired.
+      */
+      #currentTime {
+        color: #fdf9ef;
+        margin-top: auto;
+      }
     </style>
   </head>
   <body>
+    <!-- We define a global var for the ICS script if needed.
+         e.g. var room = "C-G-6";  or ICS file name.
+         We'll see. -->
+
     <div class="container">
       <div class="columns">
         <!-- Left Column (25%) -->
         <div class="left-col">
           <div class="header">
             <!-- Time element dynamically updated -->
-            <div class="time"></div>
+            <div class="time" id="timeDisplay"></div>
             <div class="room-info">
               <div>Meeting Room C-G-6</div>
             </div>
           </div>
           <!-- Random quote area -->
           <div class="cortana-prompt"></div>
+          <!-- If ICS script uses a "currentTime" for the footer, uncomment:
+          <div id="currentTime"></div> -->
         </div>
 
         <!-- Right Column (75%) -->
         <div class="right-col">
           <!-- Schedule/meetings panel with a smoky look -->
           <div class="schedule-panel">
-            <!-- The banner indicating Available or Busy -->
-            <div class="schedule-banner">Available</div>
-
-            <!-- List of meetings for the day -->
-            <div class="meeting">
-              <div class="meeting-info">
-                <div class="meeting-title">Daily SCRUM</div>
-                <div class="meeting-time">10:00 AM - 11:00 AM</div>
-              </div>
-            </div>
-
-            <div class="meeting">
-              <div class="meeting-info">
-                <div class="meeting-title">Project Sync</div>
-                <div class="meeting-time">11:15 AM - 12:00 PM</div>
-              </div>
-            </div>
-
-            <div class="meeting">
-              <div class="meeting-info">
-                <div class="meeting-title">Lunch Break</div>
-                <div class="meeting-time">12:00 PM - 1:00 PM</div>
-              </div>
-            </div>
-
-            <div class="meeting">
-              <div class="meeting-info">
-                <div class="meeting-title">Stakeholder Review</div>
-                <div class="meeting-time">2:00 PM - 3:00 PM</div>
-              </div>
-            </div>
+            <!-- The banner from ICS script -->
+            <div id="meetingStatus">Loading...</div>
+            <!-- ICS script populates the meetings -->
+            <div id="meetingData"></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Inline JavaScript to get the current time and fetch a random quote from quotes.json -->
+    <!-- Inline JavaScript for the clock + random quotes -->
     <script>
-      // Hard-code your meeting times here in 12-hour format
-      // This array can be easily extended or made dynamic.
-      const schedule = [
-        { start: "10:00 AM", end: "11:00 AM" },
-        { start: "11:15 AM", end: "12:00 PM" },
-        { start: "12:00 PM", end: "1:00 PM" },
-        { start: "2:00 PM", end: "3:00 PM" },
-      ];
-
-      // Convert a 12-hour time string (e.g. '10:00 AM') into total minutes from midnight.
-      function parseTimeToMinutes(twelveHour) {
-        const [timePart, ampm] = twelveHour.split(" ");
-        let [hour, minute] = timePart.split(":").map(Number);
-        if (ampm.toUpperCase() === "PM" && hour !== 12) {
-          hour += 12;
-        } else if (ampm.toUpperCase() === "AM" && hour === 12) {
-          hour = 0;
-        }
-        return hour * 60 + minute;
-      }
-
-      // Check if current time is within any scheduled meeting.
-      function isBusyNow() {
-        const now = new Date();
-        const currentMinutes = now.getHours() * 60 + now.getMinutes();
-
-        // Return true if within any scheduled block.
-        return schedule.some((meeting) => {
-          const start = parseTimeToMinutes(meeting.start);
-          const end = parseTimeToMinutes(meeting.end);
-          // If now is between start and end (inclusive?), we consider that busy.
-          return currentMinutes >= start && currentMinutes < end;
-        });
-      }
-
-      // Update current time on the page.
+      // We'll keep a simple clock for the left side.
       function updateTime() {
         const now = new Date();
         let hours = now.getHours();
         let minutes = now.getMinutes();
+        const ampm = hours >= 12 ? "PM" : "AM";
+        hours = hours % 12 || 12;
         minutes = minutes < 10 ? "0" + minutes : minutes;
-        document.querySelector(".time").textContent = `${hours}:${minutes}`;
-
-        // After updating time, determine if we are busy.
-        const banner = document.querySelector(".schedule-banner");
-        if (isBusyNow()) {
-          banner.textContent = "Busy";
-          banner.style.backgroundColor = "#dc3545"; // red
-        } else {
-          banner.textContent = "Available";
-          banner.style.backgroundColor = "#28a745"; // green
-        }
+        document.getElementById(
+          "timeDisplay"
+        ).textContent = `${hours}:${minutes} ${ampm}`;
       }
 
       // Example quotes.json structure:
@@ -287,8 +254,21 @@
       updateTime();
       fetchRandomQuote();
 
-      // Update time every second
+      // Update the clock every second
       setInterval(updateTime, 1000);
     </script>
+
+    <!-- This is your external ICS script
+         that reads from 'cg4.ics' and populates meetingData + meetingStatus.
+         The code references:
+         - populateMeetingData() => sets innerHTML of #meetingData
+         - updateHeader() => sets textContent of #meetingStatus
+         - so we have <div id="meetingData"> and <div id="meetingStatus"> in the HTML.
+    -->
+    <script>
+      // Possibly define which ICS file to fetch, or do it inside the script.
+      var room = "C-G-6";
+    </script>
+    <script src="../js/roomDisplayJSON.js" defer></script>
   </body>
 </html>
